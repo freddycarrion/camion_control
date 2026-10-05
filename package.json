@@ -1,0 +1,13 @@
+{
+  "name": "camion-control-root",
+  "version": "1.0.0",
+  "description": "Sistema de Gestión de Flotas de Transporte - Root",
+  "scripts": {
+    "start": "concurrently \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "dev": "concurrently \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "build": "npm --prefix server run build && npm --prefix client run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
