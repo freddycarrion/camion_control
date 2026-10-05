@@ -39,8 +39,8 @@ export const requireAuth = async (
 
     // Crear un cliente por petición que reenvía el token del usuario a PostgREST
     req.db = createClient(
-      process.env.SUPABASE_URL || '',
-      process.env.SUPABASE_ANON_KEY || '',
+      process.env.SUPABASE_URL || 'https://placeholder.supabase.co',
+      process.env.SUPABASE_ANON_KEY || 'placeholder-key',
       {
         global: { headers: { Authorization: `Bearer ${token}` } },
         auth: { autoRefreshToken: false, persistSession: false }
