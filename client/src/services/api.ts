@@ -1,6 +1,6 @@
 import { getAuthToken } from './supabaseClient';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:4000/api');
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const token = await getAuthToken();

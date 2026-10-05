@@ -42,6 +42,10 @@ app.use((req, res) => {
   res.status(404).json({ success: false, error: 'Ruta no encontrada' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor Camión Control corriendo en http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Servidor Camión Control corriendo en http://localhost:${PORT}`);
+  });
+}
+
+export default app;
