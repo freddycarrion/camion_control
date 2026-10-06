@@ -99,10 +99,10 @@ export const PersonalPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-panel p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-panel p-4 sm:p-6">
         <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            <Users className="w-7 h-7 text-purple-400" />
+          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
+            <Users className="w-6 h-6 sm:w-7 sm:h-7 text-purple-400" />
             Gestión de Personal (Choferes y Ayudantes)
           </h1>
           <p className="text-xs text-slate-400 mt-1">
@@ -112,7 +112,7 @@ export const PersonalPage: React.FC = () => {
 
         <button
           onClick={() => handleOpenModal()}
-          className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 transition-all"
+          className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0 w-full sm:w-auto"
         >
           <UserPlus className="w-4 h-4" />
           Nuevo Empleado
@@ -120,7 +120,7 @@ export const PersonalPage: React.FC = () => {
       </div>
 
       {/* Bar Filters */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="relative w-full sm:w-80">
           <Search className="w-4 h-4 absolute left-3.5 top-3 text-slate-500" />
           <input
@@ -128,39 +128,39 @@ export const PersonalPage: React.FC = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar empleado por nombre o teléfono..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+            className="w-full pl-10 pr-4 py-2.5 sm:py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
           />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 overflow-x-auto touch-scrolling pb-1 sm:pb-0 w-full sm:w-auto">
           {['todos', 'chofer', 'ayudante'].map((r) => (
             <button
               key={r}
               onClick={() => setSelectedRolFilter(r)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize border transition-all ${
+              className={`px-3.5 py-2 sm:py-1.5 rounded-xl text-xs font-semibold capitalize border transition-all whitespace-nowrap flex-1 sm:flex-initial text-center ${
                 selectedRolFilter === r
                   ? 'bg-purple-600 text-white border-purple-500 shadow-md'
                   : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
               }`}
             >
-              {r === 'todos' ? 'Todos los Roles' : r === 'chofer' ? 'Choferes' : 'Ayudantes'}
+              {r === 'todos' ? 'Todos' : r === 'chofer' ? 'Choferes' : 'Ayudantes'}
             </button>
           ))}
         </div>
       </div>
 
       {/* Grid Personal */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         {filteredPersonal.map((p) => (
           <div
             key={p.id}
-            className="glass-card p-5 space-y-4 border border-slate-800 hover:border-slate-700 transition-all"
+            className="glass-card p-4 sm:p-5 space-y-4 border border-slate-800 hover:border-slate-700 transition-all"
           >
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between gap-2">
               <div>
                 <h3 className="text-base font-extrabold text-white">{p.nombre}</h3>
                 <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-1">
-                  <Phone className="w-3.5 h-3.5 text-slate-500" />
+                  <Phone className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
                   <span>{p.telefono || 'Sin teléfono'}</span>
                 </div>
               </div>
@@ -192,17 +192,17 @@ export const PersonalPage: React.FC = () => {
             <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800/60">
               <button
                 onClick={() => handleOpenModal(p)}
-                className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+                className="p-2.5 sm:p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
                 title="Editar"
               >
-                <Edit2 className="w-3.5 h-3.5" />
+                <Edit2 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
               </button>
               <button
                 onClick={() => handleDelete(p.id, p.nombre)}
-                className="p-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors"
+                className="p-2.5 sm:p-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
                 title="Eliminar"
               >
-                <Trash2 className="w-3.5 h-3.5" />
+                <Trash2 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
               </button>
             </div>
           </div>
@@ -232,11 +232,11 @@ export const PersonalPage: React.FC = () => {
               onChange={(e) => setNombre(e.target.value)}
               placeholder="Juan Pérez"
               required
-              className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-purple-500"
+              className="w-full px-3 py-2.5 sm:py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-purple-500"
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
                 Rol *
@@ -244,7 +244,7 @@ export const PersonalPage: React.FC = () => {
               <select
                 value={rol}
                 onChange={(e) => setRol(e.target.value as RolPersonal)}
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-purple-500"
+                className="w-full px-3 py-2.5 sm:py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-purple-500"
               >
                 <option value="chofer">Chofer</option>
                 <option value="ayudante">Ayudante</option>
@@ -261,7 +261,7 @@ export const PersonalPage: React.FC = () => {
                 value={pagoDiario}
                 onChange={(e) => setPagoDiario(Number(e.target.value))}
                 required
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-purple-500"
+                className="w-full px-3 py-2.5 sm:py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-purple-500"
               />
             </div>
           </div>

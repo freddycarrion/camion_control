@@ -100,10 +100,10 @@ export const TransaccionesPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-panel p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-panel p-4 sm:p-6">
         <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            <DollarSign className="w-7 h-7 text-emerald-400" />
+          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
+            <DollarSign className="w-6 h-6 sm:w-7 sm:h-7 text-emerald-400" />
             Control Financiero & Gastos Operativos
           </h1>
           <p className="text-xs text-slate-400 mt-1">
@@ -113,7 +113,7 @@ export const TransaccionesPage: React.FC = () => {
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all"
+          className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0 w-full sm:w-auto"
         >
           <Plus className="w-4 h-4" />
           Registrar Nuevo Gasto
@@ -126,16 +126,16 @@ export const TransaccionesPage: React.FC = () => {
         <div className="glass-card p-4 flex items-center justify-between border-emerald-500/20 bg-emerald-500/5">
           <div>
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Filtrado</span>
-            <h3 className="text-2xl font-extrabold text-white mt-0.5">
+            <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-0.5">
               ${totalMontoGasto.toLocaleString('es-ES', { minimumFractionDigits: 2 })}
             </h3>
           </div>
-          <DollarSign className="w-8 h-8 text-emerald-400" />
+          <DollarSign className="w-8 h-8 text-emerald-400 flex-shrink-0" />
         </div>
 
         {/* Filtros */}
-        <div className="lg:col-span-3 glass-card p-4 flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400">
+        <div className="lg:col-span-3 glass-card p-3.5 sm:p-4 flex flex-wrap items-center gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 w-full sm:w-auto">
             <Filter className="w-4 h-4 text-sky-400" /> Filtros:
           </div>
 
@@ -144,7 +144,7 @@ export const TransaccionesPage: React.FC = () => {
             value={fechaInicio}
             onChange={(e) => setFechaInicio(e.target.value)}
             placeholder="Desde"
-            className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white"
+            className="px-3 py-2 sm:py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white flex-1 sm:flex-initial"
           />
 
           <input
@@ -152,13 +152,13 @@ export const TransaccionesPage: React.FC = () => {
             value={fechaFin}
             onChange={(e) => setFechaFin(e.target.value)}
             placeholder="Hasta"
-            className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white"
+            className="px-3 py-2 sm:py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white flex-1 sm:flex-initial"
           />
 
           <select
             value={camionFilter}
             onChange={(e) => setCamionFilter(e.target.value)}
-            className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white"
+            className="px-3 py-2 sm:py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white w-full sm:w-auto"
           >
             <option value="">Todos los Camiones</option>
             {camiones.map((c) => (
@@ -171,7 +171,7 @@ export const TransaccionesPage: React.FC = () => {
           <select
             value={categoriaFilter}
             onChange={(e) => setCategoriaFilter(e.target.value)}
-            className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white"
+            className="px-3 py-2 sm:py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white w-full sm:w-auto"
           >
             <option value="">Todas las Categorías</option>
             <option value="combustible">Combustible</option>
@@ -187,7 +187,7 @@ export const TransaccionesPage: React.FC = () => {
 
       {/* Tabla de Transacciones */}
       <div className="glass-panel overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto touch-scrolling">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-950/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
               <tr>
@@ -223,7 +223,7 @@ export const TransaccionesPage: React.FC = () => {
                   <td className="py-3.5 px-4 text-right">
                     <button
                       onClick={() => handleDelete(t.id, t.concepto)}
-                      className="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors"
+                      className="p-2 sm:p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors min-w-[36px] min-h-[36px] inline-flex items-center justify-center"
                       title="Eliminar gasto"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -249,7 +249,7 @@ export const TransaccionesPage: React.FC = () => {
         title="Registrar Gasto Operativo"
       >
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
                 Fecha del Gasto *
@@ -259,7 +259,7 @@ export const TransaccionesPage: React.FC = () => {
                 value={fecha}
                 onChange={(e) => setFecha(e.target.value)}
                 required
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500"
+                className="w-full px-3 py-2.5 sm:py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500"
               />
             </div>
 
@@ -270,7 +270,7 @@ export const TransaccionesPage: React.FC = () => {
               <select
                 value={camionId}
                 onChange={(e) => setCamionId(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500"
+                className="w-full px-3 py-2.5 sm:py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500"
               >
                 <option value="">-- Gasto General de Flota --</option>
                 {camiones.map((c) => (
@@ -292,11 +292,11 @@ export const TransaccionesPage: React.FC = () => {
               onChange={(e) => setConcepto(e.target.value)}
               placeholder="Carga de Diesel 50 Galones / Cambio de Aceite"
               required
-              className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500"
+              className="w-full px-3 py-2.5 sm:py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500"
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
                 Categoría *

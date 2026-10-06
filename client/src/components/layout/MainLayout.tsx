@@ -20,7 +20,7 @@ export const MainLayout: React.FC = () => {
 
         <div className="flex-1 md:pl-64 flex flex-col min-w-0">
           <Navbar onToggleSidebar={() => setSidebarOpen(prev => !prev)} />
-          <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+          <main className="flex-1 p-3.5 sm:p-6 md:p-8 overflow-y-auto touch-scrolling pb-safe">
             <Outlet />
           </main>
         </div>

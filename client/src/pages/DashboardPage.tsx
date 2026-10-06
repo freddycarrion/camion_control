@@ -40,15 +40,15 @@ export const DashboardPage: React.FC = () => {
   const totalGastosMes = transacciones.reduce((acc, t) => acc + Number(t.monto), 0);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-panel p-6 border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-sky-950/40">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-panel p-4 sm:p-6 border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-sky-950/40">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-extrabold text-white tracking-tight">Resumen Operativo en Tiempo Real</h1>
-            <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold animate-pulse">
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Resumen Operativo en Tiempo Real</h1>
+            <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] sm:text-xs font-semibold animate-pulse">
               <Radio className="w-3 h-3" />
-              Supabase Realtime
+              Realtime
             </span>
           </div>
           <p className="text-xs text-slate-400 mt-1">
@@ -57,17 +57,17 @@ export const DashboardPage: React.FC = () => {
         </div>
 
         {/* Acciones Rápidas */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             onClick={() => navigate('/asignaciones')}
-            className="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs shadow-lg shadow-sky-600/30 flex items-center gap-2 transition-all"
+            className="px-4 py-2.5 sm:py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs shadow-lg shadow-sky-600/30 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
           >
             <PlusCircle className="w-4 h-4" />
             Nueva Salida a Ruta
           </button>
           <button
             onClick={() => navigate('/transacciones')}
-            className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 flex items-center gap-2 transition-all"
+            className="px-4 py-2.5 sm:py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
           >
             <DollarSign className="w-4 h-4 text-emerald-400" />
             Registrar Gasto
@@ -110,9 +110,9 @@ export const DashboardPage: React.FC = () => {
       {/* Tablas y Secciones Principales */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Camiones en Ruta Activa hoy */}
-        <div className="lg:col-span-2 glass-panel p-6 space-y-4">
+        <div className="lg:col-span-2 glass-panel p-4 sm:p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
               <Zap className="w-5 h-5 text-sky-400" />
               Camiones Salidos a Ruta Hoy
             </h2>
@@ -138,7 +138,7 @@ export const DashboardPage: React.FC = () => {
               </button>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto touch-scrolling">
               <table className="w-full text-left text-xs">
                 <thead className="bg-slate-950/60 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
                   <tr>
@@ -192,7 +192,7 @@ export const DashboardPage: React.FC = () => {
         </div>
 
         {/* Estado Operacional de la Flota */}
-        <div className="glass-panel p-6 space-y-4">
+        <div className="glass-panel p-4 sm:p-6 space-y-4">
           <h2 className="text-lg font-bold text-white flex items-center gap-2">
             <UserCheck className="w-5 h-5 text-indigo-400" />
             Estado de la Flota

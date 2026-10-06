@@ -192,10 +192,10 @@ export const AsignacionesPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-panel p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-panel p-4 sm:p-6">
         <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            <FileSpreadsheet className="w-7 h-7 text-sky-400" />
+          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
+            <FileSpreadsheet className="w-6 h-6 sm:w-7 sm:h-7 text-sky-400" />
             Planillas de Camiones
           </h1>
           <p className="text-xs text-slate-400 mt-1">
@@ -205,7 +205,7 @@ export const AsignacionesPage: React.FC = () => {
 
         <button
           onClick={handleOpenModal}
-          className="px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs shadow-lg shadow-sky-600/30 flex items-center justify-center gap-2 transition-all"
+          className="px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs shadow-lg shadow-sky-600/30 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0 w-full sm:w-auto"
         >
           <Plus className="w-4 h-4" />
           Nueva Planilla de Camión
@@ -213,21 +213,21 @@ export const AsignacionesPage: React.FC = () => {
       </div>
 
       {/* Barra de Filtros, Buscador y Orden de Fecha */}
-      <div className="glass-panel p-4 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+      <div className="glass-panel p-3.5 sm:p-4 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 sm:gap-4">
         {/* Buscador */}
-        <div className="relative flex-1">
+        <div className="relative flex-1 w-full">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Buscar por N° Planilla, Fecha, Camión (Placa/Código), Chofer, Ayudante..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors"
+            placeholder="Buscar por N° Planilla, Fecha, Camión, Chofer..."
+            className="w-full pl-10 pr-8 py-2.5 sm:py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors"
           />
           {searchTerm && (
             <button
               onClick={() => setSearchTerm('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-1"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -235,11 +235,11 @@ export const AsignacionesPage: React.FC = () => {
         </div>
 
         {/* Filtros de Fecha */}
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 w-full sm:w-auto justify-stretch">
             <button
               onClick={() => setModoFecha('todas')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs font-semibold transition-all text-center ${
                 modoFecha === 'todas'
                   ? 'bg-sky-600 text-white shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
@@ -249,7 +249,7 @@ export const AsignacionesPage: React.FC = () => {
             </button>
             <button
               onClick={() => setModoFecha('especifica')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs font-semibold transition-all text-center ${
                 modoFecha === 'especifica'
                   ? 'bg-sky-600 text-white shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
@@ -260,13 +260,13 @@ export const AsignacionesPage: React.FC = () => {
           </div>
 
           {modoFecha === 'especifica' && (
-            <div className="flex items-center gap-2 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800">
-              <Calendar className="w-4 h-4 text-sky-400" />
+            <div className="flex items-center gap-2 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 w-full sm:w-auto">
+              <Calendar className="w-4 h-4 text-sky-400 flex-shrink-0" />
               <input
                 type="date"
                 value={fechaFiltro}
                 onChange={(e) => setFechaFiltro(e.target.value)}
-                className="bg-transparent text-xs text-white focus:outline-none"
+                className="bg-transparent text-xs text-white focus:outline-none w-full"
               />
             </div>
           )}
@@ -274,12 +274,12 @@ export const AsignacionesPage: React.FC = () => {
           {/* Toggle de Orden por Fecha */}
           <button
             onClick={() => setSortAscending(prev => !prev)}
-            className="px-3 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 transition-all"
+            className="px-3 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-300 flex items-center justify-center gap-2 transition-all w-full sm:w-auto"
             title="Cambiar orden por fecha"
           >
-            <ArrowUpDown className="w-3.5 h-3.5 text-sky-400" />
-            <span>
-              Orden: {sortAscending ? 'Más antiguas primero' : 'Más recientes primero'}
+            <ArrowUpDown className="w-3.5 h-3.5 text-sky-400 flex-shrink-0" />
+            <span className="truncate">
+              Orden: {sortAscending ? 'Más antiguas' : 'Más recientes'}
             </span>
           </button>
         </div>
@@ -291,7 +291,7 @@ export const AsignacionesPage: React.FC = () => {
           Mostrando {planillasFiltradas.length} {planillasFiltradas.length === 1 ? 'planilla' : 'planillas'}
         </span>
         {searchTerm && (
-          <span className="text-sky-400">
+          <span className="text-sky-400 truncate max-w-[150px] sm:max-w-none">
             Filtrado por: "{searchTerm}"
           </span>
         )}
@@ -304,26 +304,26 @@ export const AsignacionesPage: React.FC = () => {
           return (
             <div
               key={asig.id}
-              className="glass-panel p-5 border border-slate-800/90 hover:border-slate-700 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-5"
+              className="glass-panel p-4 sm:p-5 border border-slate-800/90 hover:border-slate-700 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-5"
             >
               <div className="space-y-3 flex-1">
                 {/* Formato Requerido: Planilla - Fecha - Camión */}
-                <div className="flex flex-wrap items-center gap-2.5">
+                <div className="flex flex-wrap items-center gap-2">
                   {/* Badge Planilla */}
-                  <span className="px-3 py-1 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-extrabold flex items-center gap-1.5">
-                    <FileText className="w-3.5 h-3.5" />
+                  <span className="px-2.5 py-1 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-extrabold flex items-center gap-1.5">
+                    <FileText className="w-3.5 h-3.5 flex-shrink-0" />
                     Planilla: {folio}
                   </span>
 
                   {/* Badge Fecha */}
-                  <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-mono font-bold flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                  <span className="px-2.5 py-1 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-mono font-bold flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                     {asig.fecha}
                   </span>
 
                   {/* Badge Camión */}
-                  <span className="px-3 py-1 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold flex items-center gap-1.5">
-                    <Truck className="w-3.5 h-3.5" />
+                  <span className="px-2.5 py-1 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold flex items-center gap-1.5">
+                    <Truck className="w-3.5 h-3.5 flex-shrink-0" />
                     Camión: {asig.camion?.codigo_interno || 'Camión'} ({asig.camion?.placa || 'S/P'})
                   </span>
 
@@ -331,11 +331,11 @@ export const AsignacionesPage: React.FC = () => {
                 </div>
 
                 {/* Detalles de Tripulación */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-1 text-xs">
                   <div className="space-y-1">
                     <span className="text-slate-400 font-medium block">Chofer Asignado:</span>
                     <div className="flex items-center gap-1.5 text-slate-200 font-bold">
-                      <UserCheck className="w-4 h-4 text-sky-400" />
+                      <UserCheck className="w-4 h-4 text-sky-400 flex-shrink-0" />
                       <span>{asig.chofer?.nombre || 'Sin chofer asignado'}</span>
                       {asig.chofer?.telefono && (
                         <span className="text-[11px] text-slate-500 font-normal">({asig.chofer.telefono})</span>
@@ -374,10 +374,10 @@ export const AsignacionesPage: React.FC = () => {
               </div>
 
               {/* Acciones */}
-              <div className="flex items-center gap-2 pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-800">
+              <div className="flex flex-wrap items-center gap-2 pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-800">
                 <button
                   onClick={() => setPlanillaDetalle(asig)}
-                  className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs flex items-center gap-1.5 transition-all border border-slate-700"
+                  className="px-3 py-2 sm:py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all border border-slate-700 min-h-[38px] sm:min-h-0 flex-1 sm:flex-initial"
                   title="Ver Vista Completa / Imprimir"
                 >
                   <Printer className="w-3.5 h-3.5 text-sky-400" />
@@ -387,7 +387,7 @@ export const AsignacionesPage: React.FC = () => {
                 {asig.estado === 'en_curso' && (
                   <button
                     onClick={() => handleEstadoChange(asig.id, 'completado')}
-                    className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center gap-1 transition-all shadow-md shadow-emerald-600/20"
+                    className="px-3 py-2 sm:py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center justify-center gap-1 transition-all shadow-md shadow-emerald-600/20 min-h-[38px] sm:min-h-0 flex-1 sm:flex-initial"
                   >
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     Finalizar
@@ -397,7 +397,7 @@ export const AsignacionesPage: React.FC = () => {
                 {asig.estado !== 'cancelado' && (
                   <button
                     onClick={() => handleEstadoChange(asig.id, 'cancelado')}
-                    className="px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-semibold text-xs border border-amber-500/30 transition-all"
+                    className="px-3 py-2 sm:py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-semibold text-xs border border-amber-500/30 transition-all min-h-[38px] sm:min-h-0 flex-1 sm:flex-initial"
                   >
                     Cancelar
                   </button>
@@ -405,7 +405,7 @@ export const AsignacionesPage: React.FC = () => {
 
                 <button
                   onClick={() => handleDelete(asig.id)}
-                  className="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors"
+                  className="p-2 sm:p-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
                   title="Eliminar planilla"
                 >
                   <Trash2 className="w-4 h-4" />

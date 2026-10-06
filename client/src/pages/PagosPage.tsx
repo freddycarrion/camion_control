@@ -189,10 +189,10 @@ export const PagosPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-panel p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-panel p-4 sm:p-6">
         <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            <Receipt className="w-7 h-7 text-indigo-400" />
+          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
+            <Receipt className="w-6 h-6 sm:w-7 sm:h-7 text-indigo-400" />
             Planilla de Pagos & Adelantos de Sueldo
           </h1>
           <p className="text-xs text-slate-400 mt-1">
@@ -202,7 +202,7 @@ export const PagosPage: React.FC = () => {
 
         <button
           onClick={() => setIsAdelantoModalOpen(true)}
-          className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition-all"
+          className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0 w-full sm:w-auto"
         >
           <Plus className="w-4 h-4" />
           Registrar Adelanto de Sueldo
@@ -210,7 +210,7 @@ export const PagosPage: React.FC = () => {
       </div>
 
       {/* Pestañas */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-2">
+      <div className="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto touch-scrolling">
         {[
           { key: 'calculo', label: 'Pagar Semana', icon: Wallet },
           { key: 'historial', label: `Pagos Realizados (${planillas.length})`, icon: Receipt },
@@ -221,7 +221,7 @@ export const PagosPage: React.FC = () => {
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key as typeof activeTab)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+              className={`px-3.5 sm:px-4 py-2.5 sm:py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap flex-shrink-0 ${
                 activeTab === tab.key ? 'bg-sky-600 text-white shadow-md' : 'bg-slate-900 text-slate-400 hover:text-white'
               }`}
             >
@@ -236,33 +236,35 @@ export const PagosPage: React.FC = () => {
       {activeTab === 'calculo' && (
         <div className="space-y-6">
           {/* Selector de período */}
-          <div className="glass-panel p-5 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+          <div className="glass-panel p-4 sm:p-5 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <Calendar className="w-5 h-5 text-sky-400" />
+              <Calendar className="w-5 h-5 text-sky-400 flex-shrink-0" />
               <div>
                 <span className="text-xs font-bold text-white block">Período a pagar</span>
                 <span className="text-[11px] text-slate-400">Se cuentan los días en que cada empleado salió a ruta</span>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
-              <input
-                type="date"
-                value={fechaInicio}
-                onChange={(e) => setFechaInicio(e.target.value)}
-                className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white"
-              />
-              <span className="text-slate-500 text-xs">a</span>
-              <input
-                type="date"
-                value={fechaFin}
-                onChange={(e) => setFechaFin(e.target.value)}
-                className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white"
-              />
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+              <div className="flex items-center gap-2 flex-1 sm:flex-initial">
+                <input
+                  type="date"
+                  value={fechaInicio}
+                  onChange={(e) => setFechaInicio(e.target.value)}
+                  className="px-3 py-2 sm:py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white flex-1"
+                />
+                <span className="text-slate-500 text-xs">a</span>
+                <input
+                  type="date"
+                  value={fechaFin}
+                  onChange={(e) => setFechaFin(e.target.value)}
+                  className="px-3 py-2 sm:py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white flex-1"
+                />
+              </div>
               <button
                 onClick={handleRecalcular}
                 disabled={loading}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 flex items-center gap-1.5 disabled:opacity-50"
+                className="px-4 py-2.5 sm:py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 flex items-center justify-center gap-1.5 disabled:opacity-50 min-h-[40px] sm:min-h-0"
               >
                 <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                 Recalcular
@@ -302,7 +304,7 @@ export const PagosPage: React.FC = () => {
 
           {/* Tabla de cálculo */}
           <div className="glass-panel overflow-hidden">
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto touch-scrolling">
               <table className="w-full text-left text-xs">
                 <thead className="bg-slate-950/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
                   <tr>
@@ -350,7 +352,7 @@ export const PagosPage: React.FC = () => {
                         ) : (
                           <button
                             onClick={() => setEmpleadoAPagar(item)}
-                            className="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs inline-flex items-center gap-1.5 shadow-md shadow-emerald-600/20 transition-all"
+                            className="px-4 py-2 sm:py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs inline-flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/20 transition-all min-h-[38px] sm:min-h-0"
                           >
                             <Wallet className="w-3.5 h-3.5" /> Pagar
                           </button>
@@ -378,7 +380,7 @@ export const PagosPage: React.FC = () => {
       {/* TAB 2: PAGOS REALIZADOS */}
       {activeTab === 'historial' && (
         <div className="glass-panel overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto touch-scrolling">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-950/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
                 <tr>
@@ -431,7 +433,7 @@ export const PagosPage: React.FC = () => {
       {/* TAB 3: ADELANTOS */}
       {activeTab === 'adelantos' && (
         <div className="glass-panel overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto touch-scrolling">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-950/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
                 <tr>

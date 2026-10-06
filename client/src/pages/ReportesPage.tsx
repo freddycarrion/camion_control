@@ -119,10 +119,10 @@ export const ReportesPage = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-panel p-6 no-print">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-panel p-4 sm:p-6 no-print">
         <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            <FileSpreadsheet className="w-7 h-7 text-sky-400" />
+          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
+            <FileSpreadsheet className="w-6 h-6 sm:w-7 sm:h-7 text-sky-400" />
             Reportes Financieros & PDF
           </h1>
           <p className="text-xs text-slate-400 mt-1">
@@ -130,17 +130,17 @@ export const ReportesPage = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <button
             onClick={handlePrint}
-            className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 flex items-center gap-2 transition-all"
+            className="flex-1 sm:flex-initial px-3.5 sm:px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
           >
             <Printer className="w-4 h-4" />
-            Imprimir Vista
+            Imprimir
           </button>
           <button
             onClick={handleExportPDF}
-            className="px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs shadow-lg shadow-sky-600/30 flex items-center gap-2 transition-all"
+            className="flex-1 sm:flex-initial px-3.5 sm:px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs shadow-lg shadow-sky-600/30 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
           >
             <Download className="w-4 h-4" />
             Exportar PDF
@@ -149,24 +149,26 @@ export const ReportesPage = () => {
       </div>
 
       {/* Selector de Rango de Fechas */}
-      <div className="glass-card p-4 flex items-center gap-4 no-print">
+      <div className="glass-card p-3.5 sm:p-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4 no-print">
         <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-          <Calendar className="w-4 h-4 text-sky-400" />
+          <Calendar className="w-4 h-4 text-sky-400 flex-shrink-0" />
           <span>Rango de Evaluación:</span>
         </div>
-        <input
-          type="date"
-          value={fechaInicio}
-          onChange={(e) => setFechaInicio(e.target.value)}
-          className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white"
-        />
-        <span className="text-slate-500 text-xs">hasta</span>
-        <input
-          type="date"
-          value={fechaFin}
-          onChange={(e) => setFechaFin(e.target.value)}
-          className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white"
-        />
+        <div className="flex items-center gap-2 flex-1">
+          <input
+            type="date"
+            value={fechaInicio}
+            onChange={(e) => setFechaInicio(e.target.value)}
+            className="px-3 py-2 sm:py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white flex-1"
+          />
+          <span className="text-slate-500 text-xs">hasta</span>
+          <input
+            type="date"
+            value={fechaFin}
+            onChange={(e) => setFechaFin(e.target.value)}
+            className="px-3 py-2 sm:py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white flex-1"
+          />
+        </div>
       </div>
 
       {/* Vista de Reporte printable */}
@@ -174,33 +176,33 @@ export const ReportesPage = () => {
         <div className="space-y-6">
           {/* Tarjetas Consolidadas */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="glass-panel p-5 border-sky-500/20">
+            <div className="glass-panel p-4 sm:p-5 border-sky-500/20">
               <span className="text-[11px] font-bold text-slate-400 uppercase">Gastos Operativos</span>
-              <h3 className="text-2xl font-extrabold text-white mt-1">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">
                 ${reporte.resumen_general.total_gastos_operativos.toFixed(2)}
               </h3>
               <p className="text-[10px] text-slate-400 mt-0.5">Combustible, peajes y mecánica</p>
             </div>
 
-            <div className="glass-panel p-5 border-amber-500/20">
+            <div className="glass-panel p-4 sm:p-5 border-amber-500/20">
               <span className="text-[11px] font-bold text-slate-400 uppercase">Adelantos Sueldo</span>
-              <h3 className="text-2xl font-extrabold text-amber-400 mt-1">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-amber-400 mt-1">
                 ${reporte.resumen_general.total_adelantos_personal.toFixed(2)}
               </h3>
               <p className="text-[10px] text-slate-400 mt-0.5">Entregados en el período</p>
             </div>
 
-            <div className="glass-panel p-5 border-purple-500/20">
+            <div className="glass-panel p-4 sm:p-5 border-purple-500/20">
               <span className="text-[11px] font-bold text-slate-400 uppercase">Planillas de Pago</span>
-              <h3 className="text-2xl font-extrabold text-purple-400 mt-1">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-purple-400 mt-1">
                 ${reporte.resumen_general.total_planilla_neto.toFixed(2)}
               </h3>
               <p className="text-[10px] text-slate-400 mt-0.5">Neto acumulado</p>
             </div>
 
-            <div className="glass-panel p-5 border-emerald-500/30 bg-emerald-500/5">
+            <div className="glass-panel p-4 sm:p-5 border-emerald-500/30 bg-emerald-500/5">
               <span className="text-[11px] font-bold text-emerald-400 uppercase">Costo Total Operativo</span>
-              <h3 className="text-2xl font-extrabold text-emerald-400 mt-1">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-emerald-400 mt-1">
                 ${reporte.resumen_general.costo_total_operativo.toFixed(2)}
               </h3>
               <p className="text-[10px] text-slate-400 mt-0.5">Gastos + Planillas + Adelantos</p>
@@ -208,13 +210,13 @@ export const ReportesPage = () => {
           </div>
 
           {/* Desglose 1: Gastos por camión */}
-          <div className="glass-panel p-6 space-y-4">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <Truck className="w-5 h-5 text-sky-400" />
+          <div className="glass-panel p-4 sm:p-6 space-y-4">
+            <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+              <Truck className="w-5 h-5 text-sky-400 flex-shrink-0" />
               1. Gastos Operativos Desglosados por Camión
             </h2>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto touch-scrolling">
               <table className="w-full text-left text-xs">
                 <thead className="bg-slate-950/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
                   <tr>
@@ -242,13 +244,13 @@ export const ReportesPage = () => {
 
           {/* Desglose 2: Planilla y Adelantos */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="glass-panel p-6 space-y-4">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <Users className="w-5 h-5 text-purple-400" />
+            <div className="glass-panel p-4 sm:p-6 space-y-4">
+              <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <Users className="w-5 h-5 text-purple-400 flex-shrink-0" />
                 2. Desglose de Adelantos de Sueldo
               </h2>
 
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto touch-scrolling">
                 <table className="w-full text-left text-xs">
                   <thead className="bg-slate-950/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
                     <tr>
@@ -270,13 +272,13 @@ export const ReportesPage = () => {
               </div>
             </div>
 
-            <div className="glass-panel p-6 space-y-4">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <Receipt className="w-5 h-5 text-indigo-400" />
+            <div className="glass-panel p-4 sm:p-6 space-y-4">
+              <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <Receipt className="w-5 h-5 text-indigo-400 flex-shrink-0" />
                 3. Desglose de Planillas Netas
               </h2>
 
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto touch-scrolling">
                 <table className="w-full text-left text-xs">
                   <thead className="bg-slate-950/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
                     <tr>
