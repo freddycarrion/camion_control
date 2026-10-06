@@ -31,17 +31,31 @@ export const usePagosStore = create<PagosState>((set, get) => ({
   fetchAdelantos: async (personal_id) => {
     set({ loading: true, error: null });
     try {
-      if (navigator.onLine) {
-        const query = personal_id ? `?personal_id=${personal_id}` : '';
-        const remoteData = await api.get<AdelantoSueldo[]>(`/pagos/adelantos${query}`);
-        set({ adelantos: remoteData || [] });
-        for (const item of remoteData || []) {
-          await db.adelantos.put({ ...item, sync_status: 'synced' });
-        }
-      } else {
-        let localData = await db.adelantos.toArray();
-        if (personal_id) localData = localData.filter(a => a.personal_id === personal_id);
+      let localData = await db.adelantos.toArray();
+      if (personal_id) localData = localData.filter(a => a.personal_id === personal_id);
+      if (localData.length > 0) {
         set({ adelantos: localData });
+      }
+
+      if (navigator.onLine) {
+        try {
+          const query = personal_id ? `?personal_id=${personal_id}` : '';
+          const remoteData = await api.get<AdelantoSueldo[]>(`/pagos/adelantos${query}`);
+          const mergedMap = new Map<string, AdelantoSueldo>();
+
+          localData.forEach(a => mergedMap.set(a.id, a));
+
+          if (remoteData && Array.isArray(remoteData)) {
+            for (const item of remoteData) {
+              mergedMap.set(item.id, { ...item, sync_status: 'synced' });
+              await db.adelantos.put({ ...item, sync_status: 'synced' });
+            }
+          }
+
+          set({ adelantos: Array.from(mergedMap.values()) });
+        } catch (netErr: any) {
+          console.warn('Servidor no disponible para adelantos, conservando datos locales:', netErr.message);
+        }
       }
     } catch (err: any) {
       const localData = await db.adelantos.toArray();
@@ -169,15 +183,29 @@ export const usePagosStore = create<PagosState>((set, get) => ({
   fetchPlanillas: async () => {
     set({ loading: true, error: null });
     try {
-      if (navigator.onLine) {
-        const data = await api.get<PlanillaPago[]>('/pagos/planillas');
-        set({ planillas: data || [] });
-        for (const item of data || []) {
-          await db.planillas.put({ ...item, sync_status: 'synced' });
-        }
-      } else {
-        const localData = await db.planillas.toArray();
+      const localData = await db.planillas.toArray();
+      if (localData.length > 0) {
         set({ planillas: localData });
+      }
+
+      if (navigator.onLine) {
+        try {
+          const data = await api.get<PlanillaPago[]>('/pagos/planillas');
+          const mergedMap = new Map<string, PlanillaPago>();
+
+          localData.forEach(p => mergedMap.set(p.id, p));
+
+          if (data && Array.isArray(data)) {
+            for (const item of data) {
+              mergedMap.set(item.id, { ...item, sync_status: 'synced' });
+              await db.planillas.put({ ...item, sync_status: 'synced' });
+            }
+          }
+
+          set({ planillas: Array.from(mergedMap.values()) });
+        } catch (netErr: any) {
+          console.warn('Servidor no disponible para planillas de pago, conservando datos locales:', netErr.message);
+        }
       }
     } catch (err: any) {
       const localData = await db.planillas.toArray();

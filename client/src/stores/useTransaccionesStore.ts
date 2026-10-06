@@ -28,24 +28,40 @@ export const useTransaccionesStore = create<TransaccionesState>((set, get) => ({
   fetchTransacciones: async (filters = {}) => {
     set({ loading: true, error: null });
     try {
-      if (navigator.onLine) {
-        const queryParams = new URLSearchParams();
-        if (filters.fecha_inicio) queryParams.append('fecha_inicio', filters.fecha_inicio);
-        if (filters.fecha_fin) queryParams.append('fecha_fin', filters.fecha_fin);
-        if (filters.camion_id) queryParams.append('camion_id', filters.camion_id);
-        if (filters.categoria) queryParams.append('categoria', filters.categoria);
-
-        const url = `/transacciones${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-        const remoteData = await api.get<Transaccion[]>(url);
-        set({ transacciones: remoteData || [] });
-        for (const item of remoteData || []) {
-          await db.transacciones.put({ ...item, sync_status: 'synced' });
-        }
-      } else {
-        let localData = await db.transacciones.toArray();
-        if (filters.camion_id) localData = localData.filter(t => t.camion_id === filters.camion_id);
-        if (filters.categoria) localData = localData.filter(t => t.categoria === filters.categoria);
+      // 1. Cargar locales primero
+      let localData = await db.transacciones.toArray();
+      if (filters.camion_id) localData = localData.filter(t => t.camion_id === filters.camion_id);
+      if (filters.categoria) localData = localData.filter(t => t.categoria === filters.categoria);
+      if (localData.length > 0) {
         set({ transacciones: localData });
+      }
+
+      // 2. Si está online, consultar servidor y fusionar
+      if (navigator.onLine) {
+        try {
+          const queryParams = new URLSearchParams();
+          if (filters.fecha_inicio) queryParams.append('fecha_inicio', filters.fecha_inicio);
+          if (filters.fecha_fin) queryParams.append('fecha_fin', filters.fecha_fin);
+          if (filters.camion_id) queryParams.append('camion_id', filters.camion_id);
+          if (filters.categoria) queryParams.append('categoria', filters.categoria);
+
+          const url = `/transacciones${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+          const remoteData = await api.get<Transaccion[]>(url);
+          const mergedMap = new Map<string, Transaccion>();
+
+          localData.forEach(t => mergedMap.set(t.id, t));
+
+          if (remoteData && Array.isArray(remoteData)) {
+            for (const item of remoteData) {
+              mergedMap.set(item.id, { ...item, sync_status: 'synced' });
+              await db.transacciones.put({ ...item, sync_status: 'synced' });
+            }
+          }
+
+          set({ transacciones: Array.from(mergedMap.values()) });
+        } catch (netErr: any) {
+          console.warn('Servidor no disponible para transacciones, conservando datos locales:', netErr.message);
+        }
       }
     } catch (err: any) {
       const localData = await db.transacciones.toArray();

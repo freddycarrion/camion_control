@@ -22,20 +22,35 @@ export const useCamionesStore = create<CamionesState>((set, get) => ({
   fetchCamiones: async () => {
     set({ loading: true, error: null });
     try {
-      if (navigator.onLine) {
-        const remoteData = await api.get<Camion[]>('/camiones');
-        set({ camiones: remoteData || [] });
-        // Actualizar Dexie DB local
-        for (const item of remoteData || []) {
-          await db.camiones.put({ ...item, sync_status: 'synced' });
-        }
-      } else {
-        // Cargar desde Dexie DB offline
-        const localData = await db.camiones.toArray();
+      // 1. Mostrar de inmediato los datos locales de Dexie
+      const localData = await db.camiones.toArray();
+      if (localData.length > 0) {
         set({ camiones: localData });
       }
+
+      // 2. Si está online, consultar datos remotos y fusionar sin borrar locales
+      if (navigator.onLine) {
+        try {
+          const remoteData = await api.get<Camion[]>('/camiones');
+          const mergedMap = new Map<string, Camion>();
+
+          // Preservar primero los locales
+          localData.forEach(c => mergedMap.set(c.id, c));
+
+          // Actualizar con remotos
+          if (remoteData && Array.isArray(remoteData)) {
+            for (const item of remoteData) {
+              mergedMap.set(item.id, { ...item, sync_status: 'synced' });
+              await db.camiones.put({ ...item, sync_status: 'synced' });
+            }
+          }
+
+          set({ camiones: Array.from(mergedMap.values()) });
+        } catch (netErr: any) {
+          console.warn('Servidor no disponible, conservando datos locales:', netErr.message);
+        }
+      }
     } catch (err: any) {
-      // Fallback a Dexie si falla la red
       const localData = await db.camiones.toArray();
       set({ camiones: localData, error: err.message });
     } finally {

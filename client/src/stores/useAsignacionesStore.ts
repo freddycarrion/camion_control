@@ -40,18 +40,35 @@ export const useAsignacionesStore = create<AsignacionesState>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const isAll = !fecha || fecha === 'all';
-      if (navigator.onLine) {
-        const queryPath = isAll ? '/asignaciones' : `/asignaciones?fecha=${fecha}`;
-        const remoteData = await api.get<AsignacionDiaria[]>(queryPath);
-        set({ asignaciones: remoteData || [] });
-        for (const item of remoteData || []) {
-          await db.asignaciones.put({ ...item, sync_status: 'synced' });
-        }
-      } else {
-        const localData = isAll
-          ? await db.asignaciones.reverse().sortBy('fecha')
-          : await db.asignaciones.where('fecha').equals(fecha).toArray();
+      // 1. Cargar datos locales de Dexie primero
+      let localData = isAll
+        ? await db.asignaciones.reverse().sortBy('fecha')
+        : await db.asignaciones.where('fecha').equals(fecha).toArray();
+
+      if (localData.length > 0) {
         set({ asignaciones: localData });
+      }
+
+      // 2. Si hay conexión online, consultar servidor y fusionar
+      if (navigator.onLine) {
+        try {
+          const queryPath = isAll ? '/asignaciones' : `/asignaciones?fecha=${fecha}`;
+          const remoteData = await api.get<AsignacionDiaria[]>(queryPath);
+          const mergedMap = new Map<string, AsignacionDiaria>();
+
+          localData.forEach(a => mergedMap.set(a.id, a));
+
+          if (remoteData && Array.isArray(remoteData)) {
+            for (const item of remoteData) {
+              mergedMap.set(item.id, { ...item, sync_status: 'synced' });
+              await db.asignaciones.put({ ...item, sync_status: 'synced' });
+            }
+          }
+
+          set({ asignaciones: Array.from(mergedMap.values()) });
+        } catch (netErr: any) {
+          console.warn('Servidor no disponible para asignaciones, conservando datos locales:', netErr.message);
+        }
       }
     } catch (err: any) {
       const localData = await db.asignaciones.toArray();

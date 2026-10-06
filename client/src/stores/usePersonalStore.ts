@@ -22,19 +22,33 @@ export const usePersonalStore = create<PersonalState>((set, get) => ({
   fetchPersonal: async (rol) => {
     set({ loading: true, error: null });
     try {
-      if (navigator.onLine) {
-        const query = rol ? `?rol=${rol}` : '';
-        const remoteData = await api.get<Personal[]>(`/personal${query}`);
-        set({ personal: remoteData || [] });
-        for (const item of remoteData || []) {
-          await db.personal.put({ ...item, sync_status: 'synced' });
-        }
-      } else {
-        let localData = await db.personal.toArray();
-        if (rol) {
-          localData = localData.filter(p => p.rol === rol);
-        }
+      // 1. Cargar locales primero
+      let localData = await db.personal.toArray();
+      if (rol) localData = localData.filter(p => p.rol === rol);
+      if (localData.length > 0) {
         set({ personal: localData });
+      }
+
+      // 2. Consultar servidor y combinar
+      if (navigator.onLine) {
+        try {
+          const query = rol ? `?rol=${rol}` : '';
+          const remoteData = await api.get<Personal[]>(`/personal${query}`);
+          const mergedMap = new Map<string, Personal>();
+
+          localData.forEach(p => mergedMap.set(p.id, p));
+
+          if (remoteData && Array.isArray(remoteData)) {
+            for (const item of remoteData) {
+              mergedMap.set(item.id, { ...item, sync_status: 'synced' });
+              await db.personal.put({ ...item, sync_status: 'synced' });
+            }
+          }
+
+          set({ personal: Array.from(mergedMap.values()) });
+        } catch (netErr: any) {
+          console.warn('Servidor no disponible para personal, conservando datos locales:', netErr.message);
+        }
       }
     } catch (err: any) {
       const localData = await db.personal.toArray();
