@@ -12,6 +12,9 @@ ALTER TABLE adelantos_sueldo
 CREATE INDEX IF NOT EXISTS idx_adelantos_pendientes
     ON adelantos_sueldo(personal_id, fecha) WHERE planilla_id IS NULL;
 
+DROP FUNCTION IF EXISTS calcular_planilla(DATE, DATE, UUID);
+DROP FUNCTION IF EXISTS pagar_empleado(UUID, DATE, DATE);
+
 -- 2. Cálculo de planilla para un período.
 --    - Días trabajados = fechas DISTINTAS en que el empleado salió a ruta
 --      (como chofer o como ayudante de plantilla), excluyendo salidas canceladas.

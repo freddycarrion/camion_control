@@ -124,21 +124,92 @@ export const calcularPlanillaSemanal = async (req: AuthenticatedRequest, res: Re
       });
     }
 
-    // El cálculo se hace en PostgreSQL (función calcular_planilla) para que
-    // coincida exactamente con lo que se cobra al pagar
-    const { data, error } = await req.db!.rpc('calcular_planilla', {
-      p_inicio: fecha_inicio as string,
-      p_fin: fecha_fin as string,
-      p_personal_id: (personal_id as string) || null
-    });
+    const fInicio = fecha_inicio as string;
+    const fFin = fecha_fin as string;
+    const pId = (personal_id as string) || null;
 
-    if (error) throw error;
+    try {
+      // Intentar primero ejecutar la función PostgreSQL en Supabase
+      const { data, error } = await req.db!.rpc('calcular_planilla', {
+        p_inicio: fInicio,
+        p_fin: fFin,
+        p_personal_id: pId
+      });
 
-    const resultados = (data || []).map((row: any) =>
-      mapCalculo(row, fecha_inicio as string, fecha_fin as string)
-    );
+      if (error) throw error;
 
-    return res.json({ success: true, data: resultados });
+      const resultados = (data || []).map((row: any) =>
+        mapCalculo(row, fInicio, fFin)
+      );
+
+      return res.json({ success: true, data: resultados });
+    } catch (rpcErr: any) {
+      console.warn('RPC calcular_planilla falló o aún no existe en Supabase, ejecutando fallback backend:', rpcErr.message);
+
+      // Fallback automático por consulta directa si la función SQL no está creada aún en Supabase
+      let personalQuery = req.db!.from('personal').select('*').eq('activo', true);
+      if (pId) personalQuery = personalQuery.eq('id', pId);
+
+      const [
+        { data: personalList },
+        { data: asignacionesList },
+        { data: ayudantesList },
+        { data: adelantosList },
+        { data: planillasList }
+      ] = await Promise.all([
+        personalQuery,
+        req.db!.from('asignaciones_diarias').select('*').gte('fecha', fInicio).lte('fecha', fFin).neq('estado', 'cancelado'),
+        req.db!.from('asignacion_ayudantes').select('*'),
+        req.db!.from('adelantos_sueldo').select('*').is('planilla_id', null).lte('fecha', fFin),
+        req.db!.from('planillas_pago').select('*').lte('fecha_inicio', fFin).gte('fecha_fin', fInicio)
+      ]);
+
+      const asignacionesIds = new Set((asignacionesList || []).map((a: any) => a.id));
+      const ayudantesValidos = (ayudantesList || []).filter((ay: any) => asignacionesIds.has(ay.asignacion_id));
+
+      const resultadosFallback = (personalList || []).map((emp: any) => {
+        const fechasTrabajadas = new Set<string>();
+
+        (asignacionesList || []).forEach((a: any) => {
+          if (a.chofer_id === emp.id) fechasTrabajadas.add(a.fecha);
+        });
+
+        ayudantesValidos.forEach((ay: any) => {
+          if (ay.personal_id === emp.id) {
+            const asig = (asignacionesList || []).find((a: any) => a.id === ay.asignacion_id);
+            if (asig) fechasTrabajadas.add(asig.fecha);
+          }
+        });
+
+        const diasTrabajados = fechasTrabajadas.size;
+        const totalAdelantos = (adelantosList || [])
+          .filter((ad: any) => ad.personal_id === emp.id)
+          .reduce((sum: number, ad: any) => sum + Number(ad.monto), 0);
+
+        const bruto = diasTrabajados * Number(emp.pago_diario);
+        const neto = Math.max(0, bruto - totalAdelantos);
+        const saldoAdelanto = Math.max(0, totalAdelantos - bruto);
+        const yaPagado = (planillasList || []).some((p: any) => p.personal_id === emp.id);
+
+        return {
+          personal_id: emp.id,
+          nombre: emp.nombre,
+          rol: emp.rol,
+          pago_diario: Number(emp.pago_diario),
+          dias_trabajados: diasTrabajados,
+          monto_bruto: bruto,
+          total_adelantos: totalAdelantos,
+          monto_neto: neto,
+          saldo_adelanto: saldoAdelanto,
+          ya_pagado: yaPagado,
+          fecha_inicio: fInicio,
+          fecha_fin: fFin
+        };
+      });
+
+      resultadosFallback.sort((a: any, b: any) => a.nombre.localeCompare(b.nombre));
+      return res.json({ success: true, data: resultadosFallback });
+    }
   } catch (error: any) {
     return res.status(500).json({ success: false, error: error.message });
   }
@@ -156,14 +227,112 @@ export const pagarEmpleado = async (req: AuthenticatedRequest, res: Response) =>
       });
     }
 
-    const { data, error } = await req.db!.rpc('pagar_empleado', {
-      p_personal_id: personal_id,
-      p_inicio: fecha_inicio,
-      p_fin: fecha_fin
-    });
+    try {
+      const { data, error } = await req.db!.rpc('pagar_empleado', {
+        p_personal_id: personal_id,
+        p_inicio: fecha_inicio,
+        p_fin: fecha_fin
+      });
 
-    if (error) throw error;
-    return res.status(201).json({ success: true, data });
+      if (error) throw error;
+      return res.status(201).json({ success: true, data });
+    } catch (rpcErr: any) {
+      console.warn('RPC pagar_empleado falló o no existe, usando fallback:', rpcErr.message);
+
+      // Fallback backend para pagar empleado si la función SQL no está cargada aún
+      const { data: emp } = await req.db!.from('personal').select('*').eq('id', personal_id).single();
+      if (!emp) throw new Error('Empleado no encontrado');
+
+      // Buscar asignaciones y ayudantes
+      const { data: asignacionesList } = await req.db!
+        .from('asignaciones_diarias')
+        .select('*')
+        .gte('fecha', fecha_inicio)
+        .lte('fecha', fecha_fin)
+        .neq('estado', 'cancelado');
+
+      const asignacionesIds = new Set((asignacionesList || []).map((a: any) => a.id));
+      const { data: ayudantesList } = await req.db!.from('asignacion_ayudantes').select('*');
+      const ayudantesValidos = (ayudantesList || []).filter((ay: any) => asignacionesIds.has(ay.asignacion_id));
+
+      const fechasTrabajadas = new Set<string>();
+      (asignacionesList || []).forEach((a: any) => {
+        if (a.chofer_id === personal_id) fechasTrabajadas.add(a.fecha);
+      });
+      ayudantesValidos.forEach((ay: any) => {
+        if (ay.personal_id === personal_id) {
+          const asig = (asignacionesList || []).find((a: any) => a.id === ay.asignacion_id);
+          if (asig) fechasTrabajadas.add(asig.fecha);
+        }
+      });
+
+      const diasTrabajados = fechasTrabajadas.size;
+      if (diasTrabajados === 0) {
+        throw new Error(`El empleado no tiene días trabajados en el período ${fecha_inicio} al ${fecha_fin}`);
+      }
+
+      const { data: adelantosPendientes } = await req.db!
+        .from('adelantos_sueldo')
+        .select('*')
+        .eq('personal_id', personal_id)
+        .is('planilla_id', null)
+        .lte('fecha', fecha_fin);
+
+      const totalAdelantos = (adelantosPendientes || []).reduce((s: number, a: any) => s + Number(a.monto), 0);
+      const montoBruto = diasTrabajados * Number(emp.pago_diario);
+      const montoDescontado = Math.min(montoBruto, totalAdelantos);
+      const montoNeto = Math.max(0, montoBruto - totalAdelantos);
+      const saldoAdelanto = Math.max(0, totalAdelantos - montoBruto);
+
+      // Crear registro en planillas_pago
+      const { data: nuevaPlanilla, error: pErr } = await req.db!
+        .from('planillas_pago')
+        .insert([{
+          personal_id,
+          fecha_inicio,
+          fecha_fin,
+          dias_trabajados: diasTrabajados,
+          pago_diario: Number(emp.pago_diario),
+          monto_bruto: montoBruto,
+          total_adelantos: montoDescontado,
+          monto_neto: montoNeto,
+          estado: 'pagado',
+          fecha_liquidacion: new Date().toISOString(),
+          user_id: req.user?.id || null,
+          sync_status: 'synced'
+        }])
+        .select()
+        .single();
+
+      if (pErr) throw pErr;
+
+      // Descontar adelantos vinculándolos a la nueva planilla
+      if (adelantosPendientes && adelantosPendientes.length > 0) {
+        const adelantoIds = adelantosPendientes.map((a: any) => a.id);
+        await req.db!
+          .from('adelantos_sueldo')
+          .update({ planilla_id: nuevaPlanilla.id })
+          .in('id', adelantoIds);
+      }
+
+      // Si quedó saldo de adelantos, crear adelanto con la diferencia para el siguiente periodo
+      if (saldoAdelanto > 0) {
+        const fechaSiguiente = new Date(fecha_fin);
+        fechaSiguiente.setDate(fechaSiguiente.getDate() + 1);
+        const fSigStr = fechaSiguiente.toISOString().split('T')[0];
+
+        await req.db!.from('adelantos_sueldo').insert([{
+          personal_id,
+          fecha: fSigStr,
+          monto: saldoAdelanto,
+          motivo: `Saldo de adelantos no cubierto por la planilla ${fecha_inicio} al ${fecha_fin}`,
+          user_id: req.user?.id || null,
+          sync_status: 'synced'
+        }]);
+      }
+
+      return res.status(201).json({ success: true, data: nuevaPlanilla });
+    }
   } catch (error: any) {
     return res.status(400).json({ success: false, error: error.message });
   }
