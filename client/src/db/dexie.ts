@@ -23,7 +23,7 @@ export class CamionControlDB extends Dexie {
     this.version(1).stores({
       camiones: 'id, placa, codigo_interno, estado, chofer_titular_id, sync_status, updated_at',
       personal: 'id, nombre, rol, activo, sync_status, updated_at',
-      asignaciones: 'id, fecha, camion_id, chofer_id, estado, sync_status, updated_at',
+      asignaciones: 'id, numero_planilla, fecha, camion_id, chofer_id, estado, sync_status, updated_at',
       ayudantes: 'id, asignacion_id, personal_id, es_temporal, sync_status, updated_at',
       transacciones: 'id, fecha, camion_id, categoria, sync_status, updated_at',
       adelantos: 'id, personal_id, fecha, sync_status, updated_at',

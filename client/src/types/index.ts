@@ -45,6 +45,7 @@ export interface AsignacionAyudante {
 
 export interface AsignacionDiaria {
   id: string;
+  numero_planilla?: string | null;
   fecha: string;
   camion_id: string;
   camion?: Camion | null;

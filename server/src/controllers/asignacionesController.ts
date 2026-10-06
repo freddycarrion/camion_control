@@ -40,7 +40,7 @@ export const getAsignaciones = async (req: AuthenticatedRequest, res: Response) 
 
 export const createAsignacion = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { fecha, camion_id, chofer_id, observaciones, ayudantes } = req.body;
+    const { numero_planilla, fecha, camion_id, chofer_id, observaciones, ayudantes } = req.body;
 
     if (!camion_id) {
       return res.status(400).json({
@@ -50,9 +50,13 @@ export const createAsignacion = async (req: AuthenticatedRequest, res: Response)
     }
 
     const fechaAsignacion = fecha || new Date().toISOString().split('T')[0];
+    const folioPlanilla = (numero_planilla && numero_planilla.trim().length > 0)
+      ? numero_planilla.trim()
+      : `PLN-${fechaAsignacion.replace(/-/g, '')}-${Math.floor(1000 + Math.random() * 9000)}`;
 
     // 1. Insertar asignación principal
     const newAsignacion = {
+      numero_planilla: folioPlanilla,
       fecha: fechaAsignacion,
       camion_id,
       chofer_id: chofer_id || null,

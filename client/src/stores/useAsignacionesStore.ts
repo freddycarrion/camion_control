@@ -6,6 +6,7 @@ import { useSyncStore } from './useSyncStore';
 import { syncService } from '../services/syncService';
 
 interface CreateAsignacionPayload {
+  numero_planilla?: string;
   fecha?: string;
   camion_id: string;
   chofer_id?: string | null;
@@ -38,15 +39,18 @@ export const useAsignacionesStore = create<AsignacionesState>((set, get) => ({
   fetchAsignaciones: async (fecha) => {
     set({ loading: true, error: null });
     try {
-      const targetFecha = fecha || new Date().toISOString().split('T')[0];
+      const isAll = !fecha || fecha === 'all';
       if (navigator.onLine) {
-        const remoteData = await api.get<AsignacionDiaria[]>(`/asignaciones?fecha=${targetFecha}`);
+        const queryPath = isAll ? '/asignaciones' : `/asignaciones?fecha=${fecha}`;
+        const remoteData = await api.get<AsignacionDiaria[]>(queryPath);
         set({ asignaciones: remoteData || [] });
         for (const item of remoteData || []) {
           await db.asignaciones.put({ ...item, sync_status: 'synced' });
         }
       } else {
-        const localData = await db.asignaciones.where('fecha').equals(targetFecha).toArray();
+        const localData = isAll
+          ? await db.asignaciones.reverse().sortBy('fecha')
+          : await db.asignaciones.where('fecha').equals(fecha).toArray();
         set({ asignaciones: localData });
       }
     } catch (err: any) {
@@ -60,9 +64,11 @@ export const useAsignacionesStore = create<AsignacionesState>((set, get) => ({
   addAsignacion: async (payload) => {
     const tempId = crypto.randomUUID();
     const fecha = payload.fecha || new Date().toISOString().split('T')[0];
+    const folioPlanilla = payload.numero_planilla?.trim() || `PLN-${fecha.replace(/-/g, '')}-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const newRecord: AsignacionDiaria = {
       id: tempId,
+      numero_planilla: folioPlanilla,
       fecha,
       camion_id: payload.camion_id,
       chofer_id: payload.chofer_id || null,
@@ -87,14 +93,17 @@ export const useAsignacionesStore = create<AsignacionesState>((set, get) => ({
 
     if (navigator.onLine) {
       try {
-        const saved = await api.post<AsignacionDiaria>('/asignaciones', payload);
+        const saved = await api.post<AsignacionDiaria>('/asignaciones', {
+          ...payload,
+          numero_planilla: folioPlanilla
+        });
         await db.asignaciones.delete(tempId);
         await db.asignaciones.put({ ...saved, sync_status: 'synced' });
         set({
           asignaciones: get().asignaciones.map(a => (a.id === tempId ? saved : a))
         });
       } catch (err) {
-        console.warn('Salida del día guardada offline en Dexie:', err);
+        console.warn('Planilla de camión guardada offline en Dexie:', err);
       }
     }
   },

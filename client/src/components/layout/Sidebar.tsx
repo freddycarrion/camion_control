@@ -25,7 +25,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { label: 'Dashboard Resumen', path: '/', icon: LayoutDashboard },
     { label: 'Flota de Camiones', path: '/camiones', icon: Truck },
     { label: 'Gestión de Personal', path: '/personal', icon: Users },
-    { label: 'Salidas del Día', path: '/asignaciones', icon: Navigation },
+    { label: 'Planillas de Camiones', path: '/asignaciones', icon: Navigation },
     { label: 'Gastos Operativos', path: '/transacciones', icon: DollarSign },
     { label: 'Planilla de Pagos', path: '/pagos', icon: Receipt },
     { label: 'Reportes & PDF', path: '/reportes', icon: FileSpreadsheet }

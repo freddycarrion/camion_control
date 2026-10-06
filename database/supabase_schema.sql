@@ -84,6 +84,7 @@ FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 -- ====================================================================
 CREATE TABLE asignaciones_diarias (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    numero_planilla VARCHAR(50),
     fecha DATE NOT NULL DEFAULT CURRENT_DATE,
     camion_id UUID NOT NULL REFERENCES camiones(id) ON DELETE CASCADE,
     chofer_id UUID REFERENCES personal(id) ON DELETE SET NULL,
