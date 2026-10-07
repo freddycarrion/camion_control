@@ -59,12 +59,19 @@
 
 /* Print CSS Styles for Reports */
 @media print {
-  body {
-    background: white !important;
-    color: black !important;
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
-  .no-print, nav, header, sidebar, button {
+  body {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .no-print, nav, header, sidebar, button, .sidebar-container {
     display: none !important;
   }
 
@@ -72,21 +79,18 @@
     display: block !important;
   }
 
-  .glass-panel, .glass-card {
-    background: white !important;
-    border: 1px solid #ddd !important;
-    box-shadow: none !important;
-    color: black !important;
-  }
-
-  table {
+  .report-sheet-container {
     width: 100% !important;
-    border-collapse: collapse !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 10mm !important;
+    background: white !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
   }
 
-  th, td {
-    border: 1px solid #ccc !important;
-    padding: 8px !important;
-    color: black !important;
+  .page-break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
 }
