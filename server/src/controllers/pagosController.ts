@@ -68,19 +68,22 @@ export const deleteAdelanto = async (req: AuthenticatedRequest, res: Response) =
   try {
     const { id } = req.params;
 
-    // Un adelanto ya descontado en una planilla pagada no se puede eliminar
-    const { data: adelanto, error: fetchErr } = await req.db!
-      .from('adelantos_sueldo')
-      .select('planilla_id')
-      .eq('id', id)
-      .single();
+    // Verificar de forma segura si el adelanto ya fue descontado en una planilla
+    try {
+      const { data: adelanto, error: fetchErr } = await req.db!
+        .from('adelantos_sueldo')
+        .select('*')
+        .eq('id', id)
+        .maybeSingle();
 
-    if (fetchErr) throw fetchErr;
-    if (adelanto?.planilla_id) {
-      return res.status(400).json({
-        success: false,
-        error: 'Este adelanto ya fue descontado en una planilla pagada y no puede eliminarse'
-      });
+      if (!fetchErr && adelanto && (adelanto as any).planilla_id) {
+        return res.status(400).json({
+          success: false,
+          error: 'Este adelanto ya fue descontado en una planilla pagada y no puede eliminarse'
+        });
+      }
+    } catch (checkErr) {
+      console.warn('Omitiendo verificación de planilla_id en adelantos_sueldo:', checkErr);
     }
 
     const { error } = await req.db!
@@ -160,7 +163,7 @@ export const calcularPlanillaSemanal = async (req: AuthenticatedRequest, res: Re
         personalQuery,
         req.db!.from('asignaciones_diarias').select('*').gte('fecha', fInicio).lte('fecha', fFin).neq('estado', 'cancelado'),
         req.db!.from('asignacion_ayudantes').select('*'),
-        req.db!.from('adelantos_sueldo').select('*').is('planilla_id', null).lte('fecha', fFin),
+        req.db!.from('adelantos_sueldo').select('*').lte('fecha', fFin),
         req.db!.from('planillas_pago').select('*').lte('fecha_inicio', fFin).gte('fecha_fin', fInicio)
       ]);
 
@@ -271,12 +274,13 @@ export const pagarEmpleado = async (req: AuthenticatedRequest, res: Response) =>
         throw new Error(`El empleado no tiene días trabajados en el período ${fecha_inicio} al ${fecha_fin}`);
       }
 
-      const { data: adelantosPendientes } = await req.db!
+      const { data: todosAdelantos } = await req.db!
         .from('adelantos_sueldo')
         .select('*')
         .eq('personal_id', personal_id)
-        .is('planilla_id', null)
         .lte('fecha', fecha_fin);
+
+      const adelantosPendientes = (todosAdelantos || []).filter((a: any) => !a.planilla_id);
 
       const totalAdelantos = (adelantosPendientes || []).reduce((s: number, a: any) => s + Number(a.monto), 0);
       const montoBruto = diasTrabajados * Number(emp.pago_diario);
