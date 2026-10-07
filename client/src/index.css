@@ -65,14 +65,26 @@
   }
 
   body {
-    background: #f8fafc !important;
+    background: white !important;
     color: #0f172a !important;
     padding: 0 !important;
     margin: 0 !important;
   }
 
-  .no-print, nav, header, sidebar, button, .sidebar-container {
+  aside, header, nav, button, .no-print, .sidebar-container {
     display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+  }
+
+  div.md\:pl-64, div[class*="md:pl-64"], main {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .print-only {
@@ -83,10 +95,11 @@
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
-    padding: 10mm !important;
+    padding: 5mm !important;
     background: white !important;
     box-shadow: none !important;
     border-radius: 0 !important;
+    border: none !important;
   }
 
   .page-break-inside-avoid {

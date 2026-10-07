@@ -18,9 +18,9 @@ export const MainLayout: React.FC = () => {
       <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-        <div className="flex-1 md:pl-64 flex flex-col min-w-0">
+        <div className="flex-1 md:pl-64 print:pl-0 flex flex-col min-w-0">
           <Navbar onToggleSidebar={() => setSidebarOpen(prev => !prev)} />
-          <main className="flex-1 p-3.5 sm:p-6 md:p-8 overflow-y-auto touch-scrolling pb-safe">
+          <main className="flex-1 p-3.5 sm:p-6 md:p-8 print:p-0 overflow-y-auto touch-scrolling pb-safe">
             <Outlet />
           </main>
         </div>
