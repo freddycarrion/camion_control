@@ -3,7 +3,7 @@ export type EstadoCamion = 'disponible' | 'en_ruta' | 'mantenimiento' | 'fuera_s
 export type EstadoAsignacion = 'en_curso' | 'completado' | 'cancelado';
 export type CategoriaGasto = 'combustible' | 'mantenimiento' | 'peaje' | 'viaticos' | 'mecanica' | 'repuestos' | 'otros';
 export type CategoriaGastoPersonal = 'alimentacion' | 'vivienda' | 'transporte' | 'salud' | 'entretenimiento' | 'servicios' | 'educacion' | 'compras' | 'otros';
-export type MetodoPagoPersonal = 'efectivo' | 'tarjeta_credito' | 'tarjeta_debito' | 'transferencia' | 'otro';
+export type MetodoPagoPersonal = 'efectivo' | 'tarjeta_credito' | 'tarjeta_debito' | 'qr' | 'otro';
 export type EstadoPlanilla = 'pendiente' | 'pagado';
 export type SyncStatus = 'synced' | 'pending_insert' | 'pending_update' | 'pending_delete';
 

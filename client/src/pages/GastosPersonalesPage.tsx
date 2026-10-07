@@ -23,7 +23,7 @@ import {
   Banknote,
   Calendar,
   PieChart,
-  RefreshCw,
+  QrCode,
   LucideIcon
 } from 'lucide-react';
 
@@ -115,7 +115,7 @@ const METODOS_PAGO_MAP: Record<MetodoPagoPersonal, { label: string; icon: Lucide
   efectivo: { label: 'Efectivo', icon: Banknote },
   tarjeta_credito: { label: 'T. Crédito', icon: CreditCard },
   tarjeta_debito: { label: 'T. Débito', icon: CreditCard },
-  transferencia: { label: 'Transferencia', icon: RefreshCw },
+  qr: { label: 'Pago QR', icon: QrCode },
   otro: { label: 'Otro', icon: Tag }
 };
 
