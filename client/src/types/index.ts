@@ -2,8 +2,23 @@ export type RolPersonal = 'chofer' | 'ayudante';
 export type EstadoCamion = 'disponible' | 'en_ruta' | 'mantenimiento' | 'fuera_servicio';
 export type EstadoAsignacion = 'en_curso' | 'completado' | 'cancelado';
 export type CategoriaGasto = 'combustible' | 'mantenimiento' | 'peaje' | 'viaticos' | 'mecanica' | 'repuestos' | 'otros';
+export type CategoriaGastoPersonal = 'alimentacion' | 'vivienda' | 'transporte' | 'salud' | 'entretenimiento' | 'servicios' | 'educacion' | 'compras' | 'otros';
+export type MetodoPagoPersonal = 'efectivo' | 'tarjeta_credito' | 'tarjeta_debito' | 'transferencia' | 'otro';
 export type EstadoPlanilla = 'pendiente' | 'pagado';
 export type SyncStatus = 'synced' | 'pending_insert' | 'pending_update' | 'pending_delete';
+
+export interface GastoPersonal {
+  id: string;
+  fecha: string;
+  concepto: string;
+  categoria: CategoriaGastoPersonal;
+  monto: number;
+  metodo_pago: MetodoPagoPersonal;
+  observaciones?: string | null;
+  sync_status?: SyncStatus;
+  created_at?: string;
+  updated_at?: string;
+}
 
 export interface Personal {
   id: string;

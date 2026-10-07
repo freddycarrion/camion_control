@@ -6,6 +6,7 @@ import {
   Users,
   Navigation,
   DollarSign,
+  Wallet,
   Receipt,
   FileSpreadsheet,
   LogOut,
@@ -27,6 +28,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { label: 'Gestión de Personal', path: '/personal', icon: Users },
     { label: 'Planillas de Camiones', path: '/asignaciones', icon: Navigation },
     { label: 'Gastos Operativos', path: '/transacciones', icon: DollarSign },
+    { label: 'Gastos Personales', path: '/gastos-personales', icon: Wallet },
     { label: 'Planilla de Pagos', path: '/pagos', icon: Receipt },
     { label: 'Reportes & PDF', path: '/reportes', icon: FileSpreadsheet }
   ];

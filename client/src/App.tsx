@@ -8,6 +8,7 @@ import { CamionesPage } from './pages/CamionesPage';
 import { PersonalPage } from './pages/PersonalPage';
 import { AsignacionesPage } from './pages/AsignacionesPage';
 import { TransaccionesPage } from './pages/TransaccionesPage';
+import { GastosPersonalesPage } from './pages/GastosPersonalesPage';
 import { PagosPage } from './pages/PagosPage';
 import { ReportesPage } from './pages/ReportesPage';
 
@@ -57,6 +58,7 @@ export const App: React.FC = () => {
           <Route path="personal" element={<PersonalPage />} />
           <Route path="asignaciones" element={<AsignacionesPage />} />
           <Route path="transacciones" element={<TransaccionesPage />} />
+          <Route path="gastos-personales" element={<GastosPersonalesPage />} />
           <Route path="pagos" element={<PagosPage />} />
           <Route path="reportes" element={<ReportesPage />} />
         </Route>

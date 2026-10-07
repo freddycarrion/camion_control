@@ -11,6 +11,7 @@ import {
   Users,
   Navigation,
   DollarSign,
+  Wallet,
   PlusCircle,
   Clock,
   UserCheck,
@@ -70,7 +71,14 @@ export const DashboardPage: React.FC = () => {
             className="px-4 py-2.5 sm:py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
           >
             <DollarSign className="w-4 h-4 text-emerald-400" />
-            Registrar Gasto
+            Gasto Operativo
+          </button>
+          <button
+            onClick={() => navigate('/gastos-personales')}
+            className="px-4 py-2.5 sm:py-2 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 font-semibold text-xs border border-purple-500/30 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
+          >
+            <Wallet className="w-4 h-4 text-purple-400" />
+            Gastos Personales
           </button>
         </div>
       </div>

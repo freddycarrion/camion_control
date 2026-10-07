@@ -28,6 +28,7 @@ export const syncService = {
       const pendingTransacciones = await db.transacciones.where('sync_status').notEqual('synced').toArray();
       const pendingAdelantos = await db.adelantos.where('sync_status').notEqual('synced').toArray();
       const pendingPlanillas = await db.planillas.where('sync_status').notEqual('synced').toArray();
+      const pendingGastosPersonales = await db.gastos_personales.where('sync_status').notEqual('synced').toArray();
 
       const totalPending =
         pendingCamiones.length +
@@ -36,7 +37,8 @@ export const syncService = {
         pendingAyudantes.length +
         pendingTransacciones.length +
         pendingAdelantos.length +
-        pendingPlanillas.length;
+        pendingPlanillas.length +
+        pendingGastosPersonales.length;
 
       if (totalPending > 0) {
         // Enviar batch al backend Express
@@ -47,7 +49,8 @@ export const syncService = {
           ayudantes: pendingAyudantes,
           transacciones: pendingTransacciones,
           adelantos: pendingAdelantos,
-          planillas: pendingPlanillas
+          planillas: pendingPlanillas,
+          gastos_personales: pendingGastosPersonales
         });
 
         // Marcar los locales como 'synced'
@@ -64,6 +67,7 @@ export const syncService = {
         await markSynced(db.transacciones, pendingTransacciones);
         await markSynced(db.adelantos, pendingAdelantos);
         await markSynced(db.planillas, pendingPlanillas);
+        await markSynced(db.gastos_personales, pendingGastosPersonales);
       }
 
       // 2. Descargar datos frescos de Supabase a Dexie (Pull Cloud to Local)
@@ -87,11 +91,12 @@ export const syncService = {
   // Descargar los últimos datos desde Supabase e insertarlos en Dexie
   async pullCloudData() {
     try {
-      const [camiones, personal, asignaciones, transacciones] = await Promise.all([
+      const [camiones, personal, asignaciones, transacciones, gastosPersonales] = await Promise.all([
         api.get<any[]>('/camiones').catch(() => []),
         api.get<any[]>('/personal').catch(() => []),
         api.get<any[]>('/asignaciones').catch(() => []),
-        api.get<any[]>('/transacciones').catch(() => [])
+        api.get<any[]>('/transacciones').catch(() => []),
+        api.get<any[]>('/gastos-personales').catch(() => [])
       ]);
 
       if (camiones && Array.isArray(camiones)) {
@@ -112,6 +117,11 @@ export const syncService = {
       if (transacciones && Array.isArray(transacciones)) {
         for (const t of transacciones) {
           await db.transacciones.put({ ...t, sync_status: 'synced' });
+        }
+      }
+      if (gastosPersonales && Array.isArray(gastosPersonales)) {
+        for (const g of gastosPersonales) {
+          await db.gastos_personales.put({ ...g, sync_status: 'synced' });
         }
       }
     } catch (err) {

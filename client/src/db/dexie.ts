@@ -6,7 +6,8 @@ import {
   AsignacionAyudante,
   Transaccion,
   AdelantoSueldo,
-  PlanillaPago
+  PlanillaPago,
+  GastoPersonal
 } from '../types';
 
 export class CamionControlDB extends Dexie {
@@ -17,6 +18,7 @@ export class CamionControlDB extends Dexie {
   transacciones!: Table<Transaccion, string>;
   adelantos!: Table<AdelantoSueldo, string>;
   planillas!: Table<PlanillaPago, string>;
+  gastos_personales!: Table<GastoPersonal, string>;
 
   constructor() {
     super('CamionControlDB');
@@ -27,7 +29,8 @@ export class CamionControlDB extends Dexie {
       ayudantes: 'id, asignacion_id, personal_id, es_temporal, sync_status, updated_at',
       transacciones: 'id, fecha, camion_id, categoria, sync_status, updated_at',
       adelantos: 'id, personal_id, fecha, sync_status, updated_at',
-      planillas: 'id, personal_id, estado, fecha_inicio, fecha_fin, sync_status, updated_at'
+      planillas: 'id, personal_id, estado, fecha_inicio, fecha_fin, sync_status, updated_at',
+      gastos_personales: 'id, fecha, categoria, metodo_pago, sync_status, updated_at'
     });
   }
 }
@@ -44,7 +47,8 @@ export const getPendingSyncCount = async (): Promise<number> => {
     const p5 = await db.transacciones.where('sync_status').notEqual('synced').count();
     const p6 = await db.adelantos.where('sync_status').notEqual('synced').count();
     const p7 = await db.planillas.where('sync_status').notEqual('synced').count();
-    return p1 + p2 + p3 + p4 + p5 + p6 + p7;
+    const p8 = await db.gastos_personales.where('sync_status').notEqual('synced').count();
+    return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;
   } catch (error) {
     console.error('Error al contar pendientes de sincronización:', error);
     return 0;

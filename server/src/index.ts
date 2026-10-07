@@ -6,6 +6,7 @@ import camionesRoutes from './routes/camionesRoutes';
 import personalRoutes from './routes/personalRoutes';
 import asignacionesRoutes from './routes/asignacionesRoutes';
 import transaccionesRoutes from './routes/transaccionesRoutes';
+import gastosPersonalesRoutes from './routes/gastosPersonalesRoutes';
 import pagosRoutes from './routes/pagosRoutes';
 import reportesRoutes from './routes/reportesRoutes';
 import syncRoutes from './routes/syncRoutes';
@@ -42,6 +43,9 @@ app.use('/asignaciones', asignacionesRoutes);
 
 app.use('/api/transacciones', transaccionesRoutes);
 app.use('/transacciones', transaccionesRoutes);
+
+app.use('/api/gastos-personales', gastosPersonalesRoutes);
+app.use('/gastos-personales', gastosPersonalesRoutes);
 
 app.use('/api/pagos', pagosRoutes);
 app.use('/pagos', pagosRoutes);

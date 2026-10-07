@@ -3,7 +3,7 @@ import { AuthenticatedRequest } from '../middleware/authMiddleware';
 
 export const syncBatchData = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { camiones, personal, asignaciones, ayudantes, transacciones, adelantos, planillas } = req.body;
+    const { camiones, personal, asignaciones, ayudantes, transacciones, adelantos, planillas, gastos_personales } = req.body;
     const userId = req.user?.id || null;
 
     const results: Record<string, any> = {
@@ -13,7 +13,8 @@ export const syncBatchData = async (req: AuthenticatedRequest, res: Response) =>
       ayudantes: { synced: 0, errors: [] },
       transacciones: { synced: 0, errors: [] },
       adelantos: { synced: 0, errors: [] },
-      planillas: { synced: 0, errors: [] }
+      planillas: { synced: 0, errors: [] },
+      gastos_personales: { synced: 0, errors: [] }
     };
 
     // Auxiliar para procesar cada entidad con resolución last-write-wins (updated_at)
@@ -68,6 +69,7 @@ export const syncBatchData = async (req: AuthenticatedRequest, res: Response) =>
     await syncTable('transacciones', transacciones, 'transacciones');
     await syncTable('adelantos_sueldo', adelantos, 'adelantos');
     await syncTable('planillas_pago', planillas, 'planillas');
+    await syncTable('gastos_personales', gastos_personales, 'gastos_personales');
 
     return res.json({
       success: true,
