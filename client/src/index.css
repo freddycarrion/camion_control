@@ -31,25 +31,37 @@
 
 /* Custom Glassmorphism UI */
 .glass-panel {
-  @apply bg-[#06122b] border border-[#0d2854] shadow-xl rounded-2xl;
+  @apply bg-white border border-[#e2e8f0] shadow-sm rounded-2xl dark:bg-[#06122b] dark:border-[#0d2854] dark:shadow-xl;
 }
 
 .glass-card {
-  @apply bg-[#071736] border border-[#0d2854] hover:border-[#133b7a] transition-all duration-200 rounded-xl;
+  @apply bg-white border border-[#e2e8f0] hover:border-[#cbd5e1] shadow-sm transition-all duration-200 rounded-xl dark:bg-[#071736] dark:border-[#0d2854] dark:hover:border-[#133b7a];
 }
 
 /* Modo Claro (Light Mode Theme Rules matching screenshot) */
+html:not(.dark),
+html.light,
+html:not(.dark) body,
 html.light body {
   background-color: #f0f4f9 !important;
   color: #0f172a !important;
 }
 
-html.light aside {
+html.dark,
+html.dark body {
+  background-color: #020617 !important;
+  color: #f8fafc !important;
+}
+
+/* Sidebar is ALWAYS dark navy #06132b in both modes */
+aside {
   background-color: #06132b !important;
   border-color: #0d2854 !important;
   color: #ffffff !important;
 }
 
+/* Glass Panels & Cards in Light Mode */
+html:not(.dark) .glass-panel,
 html.light .glass-panel {
   background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
@@ -57,6 +69,7 @@ html.light .glass-panel {
   color: #0f172a !important;
 }
 
+html:not(.dark) .glass-card,
 html.light .glass-card {
   background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
@@ -64,81 +77,44 @@ html.light .glass-card {
   color: #0f172a !important;
 }
 
-html.light .glass-card:hover {
-  border-color: #cbd5e1 !important;
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.06) !important;
-}
-
-/* Global text contrast overrides for Light Mode across all modules */
-html.light main h1,
-html.light main h2,
-html.light main h3,
-html.light main h4,
-html.light main h5,
-html.light main h6 {
-  color: #0f172a !important;
-}
-
-html.light main p:not(.banner-text),
-html.light main label {
-  color: #334155 !important;
-}
-
-html.light main .bg-slate-900:not(aside *):not(button.bg-slate-900),
-html.light main .bg-slate-950:not(aside *):not(button.bg-slate-950),
-html.light main .bg-slate-950\/60,
-html.light main .bg-slate-900\/60,
-html.light main .bg-slate-900\/90 {
-  background-color: #f8fafc !important;
-  border-color: #e2e8f0 !important;
-  color: #0f172a !important;
-}
-
-html.light main .text-slate-400,
-html.light main .text-slate-300 {
-  color: #475569 !important;
-}
-
-/* Keep primary buttons text white */
-html.light button.bg-sky-600,
-html.light button.bg-blue-600,
-html.light button.bg-purple-600,
-html.light button.bg-indigo-600,
-html.light button.bg-emerald-600,
-html.light button.bg-rose-600,
-html.light button.bg-\[\#0070f3\],
-html.light .bg-\[\#0070f3\] {
-  color: #ffffff !important;
-}
-
 /* Form inputs & dropdowns in Light Mode */
+html:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
 html.light input:not([type="checkbox"]):not([type="radio"]),
+html:not(.dark) select,
 html.light select,
+html:not(.dark) textarea,
 html.light textarea {
   background-color: #ffffff !important;
   border-color: #cbd5e1 !important;
   color: #0f172a !important;
 }
 
+html:not(.dark) input::placeholder,
 html.light input::placeholder,
+html:not(.dark) textarea::placeholder,
 html.light textarea::placeholder {
   color: #94a3b8 !important;
 }
 
+/* Tables in Light Mode */
+html:not(.dark) table thead,
 html.light table thead {
   background-color: #edf5fd !important;
   color: #334155 !important;
   border-bottom-color: #e2e8f0 !important;
 }
 
+html:not(.dark) table tbody tr,
 html.light table tbody tr {
   border-bottom-color: #f1f5f9 !important;
 }
 
+html:not(.dark) table tbody tr:hover,
 html.light table tbody tr:hover {
   background-color: #f8fafc !important;
 }
 
+html:not(.dark) table td,
 html.light table td {
   color: #1e293b !important;
 }

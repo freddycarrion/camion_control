@@ -18,7 +18,7 @@ export const MainLayout: React.FC = () => {
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-slate-950 light:bg-[#f0f4f9] text-slate-100 light:text-slate-900 flex flex-col transition-colors duration-200">
+      <div className="min-h-screen bg-[#f0f4f9] dark:bg-[#020617] text-[#0f172a] dark:text-slate-100 flex flex-col transition-colors duration-200">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         <div className="flex-1 md:pl-64 print:pl-0 flex flex-col min-w-0">
