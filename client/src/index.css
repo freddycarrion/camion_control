@@ -69,7 +69,50 @@ html.light .glass-card:hover {
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.06) !important;
 }
 
-html.light input:not([type="checkbox"]),
+/* Global text contrast overrides for Light Mode across all modules */
+html.light main h1,
+html.light main h2,
+html.light main h3,
+html.light main h4,
+html.light main h5,
+html.light main h6 {
+  color: #0f172a !important;
+}
+
+html.light main p:not(.banner-text),
+html.light main label {
+  color: #334155 !important;
+}
+
+html.light main .bg-slate-900:not(aside *):not(button.bg-slate-900),
+html.light main .bg-slate-950:not(aside *):not(button.bg-slate-950),
+html.light main .bg-slate-950\/60,
+html.light main .bg-slate-900\/60,
+html.light main .bg-slate-900\/90 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light main .text-slate-400,
+html.light main .text-slate-300 {
+  color: #475569 !important;
+}
+
+/* Keep primary buttons text white */
+html.light button.bg-sky-600,
+html.light button.bg-blue-600,
+html.light button.bg-purple-600,
+html.light button.bg-indigo-600,
+html.light button.bg-emerald-600,
+html.light button.bg-rose-600,
+html.light button.bg-\[\#0070f3\],
+html.light .bg-\[\#0070f3\] {
+  color: #ffffff !important;
+}
+
+/* Form inputs & dropdowns in Light Mode */
+html.light input:not([type="checkbox"]):not([type="radio"]),
 html.light select,
 html.light textarea {
   background-color: #ffffff !important;

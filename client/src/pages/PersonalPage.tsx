@@ -101,11 +101,11 @@ export const PersonalPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-panel p-4 sm:p-6">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            <Users className="w-6 h-6 sm:w-7 sm:h-7 text-purple-400" />
+          <h1 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] dark:text-white tracking-tight flex items-center gap-2">
+            <Users className="w-6 h-6 sm:w-7 sm:h-7 text-purple-600 dark:text-purple-400" />
             Gestión de Personal (Choferes y Ayudantes)
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Configura las tarifas de pago diario por trabajador, teléfonos y roles en plantilla.
           </p>
         </div>
@@ -122,13 +122,13 @@ export const PersonalPage: React.FC = () => {
       {/* Bar Filters */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="relative w-full sm:w-80">
-          <Search className="w-4 h-4 absolute left-3.5 top-3 text-slate-500" />
+          <Search className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar empleado por nombre o teléfono..."
-            className="w-full pl-10 pr-4 py-2.5 sm:py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+            className="w-full pl-10 pr-4 py-2.5 sm:py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-[#0f172a] dark:text-white placeholder-slate-400 focus:outline-none focus:border-purple-500"
           />
         </div>
 
@@ -140,7 +140,7 @@ export const PersonalPage: React.FC = () => {
               className={`px-3.5 py-2 sm:py-1.5 rounded-xl text-xs font-semibold capitalize border transition-all whitespace-nowrap flex-1 sm:flex-initial text-center ${
                 selectedRolFilter === r
                   ? 'bg-purple-600 text-white border-purple-500 shadow-md'
-                  : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
+                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {r === 'todos' ? 'Todos' : r === 'chofer' ? 'Choferes' : 'Ayudantes'}
@@ -154,52 +154,52 @@ export const PersonalPage: React.FC = () => {
         {filteredPersonal.map((p) => (
           <div
             key={p.id}
-            className="glass-card p-4 sm:p-5 space-y-4 border border-slate-800 hover:border-slate-700 transition-all"
+            className="glass-card p-4 sm:p-5 space-y-4 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all"
           >
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h3 className="text-base font-extrabold text-white">{p.nombre}</h3>
-                <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-1">
-                  <Phone className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+                <h3 className="text-base font-extrabold text-[#0f172a] dark:text-white">{p.nombre}</h3>
+                <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  <Phone className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                   <span>{p.telefono || 'Sin teléfono'}</span>
                 </div>
               </div>
               <Badge type="rol" value={p.rol} />
             </div>
 
-            <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 text-xs">
+            <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-[#f8fafc] dark:bg-slate-950/60 border border-[#e2e8f0] dark:border-slate-800/80 text-xs">
               <div>
-                <span className="text-[10px] text-slate-500 uppercase tracking-wider block">Tarifa Diario</span>
-                <span className="font-extrabold text-emerald-400 flex items-center">
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider block font-semibold">Tarifa Diario</span>
+                <span className="font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center">
                   <DollarSign className="w-3.5 h-3.5" />
                   {p.pago_diario.toFixed(2)} / día
                 </span>
               </div>
               <div>
-                <span className="text-[10px] text-slate-500 uppercase tracking-wider block">Estado</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider block font-semibold">Estado</span>
                 {p.activo ? (
-                  <span className="inline-flex items-center gap-1 text-emerald-400 font-semibold">
+                  <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold">
                     <CheckCircle className="w-3.5 h-3.5" /> Activo
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 text-slate-500 font-semibold">
+                  <span className="inline-flex items-center gap-1 text-slate-400 font-semibold">
                     <XCircle className="w-3.5 h-3.5" /> Inactivo
                   </span>
                 )}
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800/60">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/60">
               <button
                 onClick={() => handleOpenModal(p)}
-                className="p-2.5 sm:p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
+                className="p-2.5 sm:p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
                 title="Editar"
               >
                 <Edit2 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
               </button>
               <button
                 onClick={() => handleDelete(p.id, p.nombre)}
-                className="p-2.5 sm:p-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
+                className="p-2.5 sm:p-2 rounded-lg bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
                 title="Eliminar"
               >
                 <Trash2 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
@@ -210,7 +210,7 @@ export const PersonalPage: React.FC = () => {
 
         {filteredPersonal.length === 0 && (
           <div className="col-span-full text-center py-12 glass-panel">
-            <p className="text-sm font-semibold text-slate-400">No se encontró personal registrado.</p>
+            <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">No se encontró personal registrado.</p>
           </div>
         )}
       </div>
@@ -223,7 +223,7 @@ export const PersonalPage: React.FC = () => {
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
               Nombre Completo *
             </label>
             <input
@@ -232,26 +232,26 @@ export const PersonalPage: React.FC = () => {
               onChange={(e) => setNombre(e.target.value)}
               placeholder="Juan Pérez"
               required
-              className="w-full px-3 py-2.5 sm:py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-purple-500"
+              className="w-full px-3 py-2.5 sm:py-2 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[#0f172a] dark:text-white text-xs focus:outline-none focus:border-purple-500"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                 Rol *
               </label>
               <select
                 value={rol}
                 onChange={(e) => setRol(e.target.value as RolPersonal)}
-                className="w-full px-3 py-2.5 sm:py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-purple-500"
+                className="w-full px-3 py-2.5 sm:py-2 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[#0f172a] dark:text-white text-xs focus:outline-none focus:border-purple-500"
               >
                 <option value="chofer">Chofer</option>
                 <option value="ayudante">Ayudante</option>
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                 Pago Diario ($) *
               </label>
               <input
@@ -261,13 +261,13 @@ export const PersonalPage: React.FC = () => {
                 value={pagoDiario}
                 onChange={(e) => setPagoDiario(Number(e.target.value))}
                 required
-                className="w-full px-3 py-2.5 sm:py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-purple-500"
+                className="w-full px-3 py-2.5 sm:py-2 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[#0f172a] dark:text-white text-xs focus:outline-none focus:border-purple-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
               Teléfono de Contacto
             </label>
             <input
@@ -275,7 +275,7 @@ export const PersonalPage: React.FC = () => {
               value={telefono}
               onChange={(e) => setTelefono(e.target.value)}
               placeholder="+593 99 123 4567"
-              className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-purple-500"
+              className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[#0f172a] dark:text-white text-xs focus:outline-none focus:border-purple-500"
             />
           </div>
 
@@ -285,9 +285,9 @@ export const PersonalPage: React.FC = () => {
               id="activo-check"
               checked={activo}
               onChange={(e) => setActivo(e.target.checked)}
-              className="w-4 h-4 rounded bg-slate-950 border-slate-800 text-purple-600 focus:ring-purple-500"
+              className="w-4 h-4 rounded bg-white dark:bg-slate-950 border-slate-300 dark:border-slate-800 text-purple-600 focus:ring-purple-500"
             />
-            <label htmlFor="activo-check" className="text-xs font-medium text-slate-300 cursor-pointer">
+            <label htmlFor="activo-check" className="text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
               Empleado activo disponible para salidas de ruta
             </label>
           </div>
@@ -296,7 +296,7 @@ export const PersonalPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+              className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold"
             >
               Cancelar
             </button>
