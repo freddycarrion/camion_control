@@ -43,41 +43,46 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-panel p-4 sm:p-6 border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-sky-950/40">
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Resumen Operativo en Tiempo Real</h1>
-            <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] sm:text-xs font-semibold animate-pulse">
-              <Radio className="w-3 h-3" />
-              Realtime
-            </span>
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-blue-700 via-blue-600 to-sky-500 text-white shadow-xl shadow-blue-500/15 relative overflow-hidden">
+        <div className="flex items-center gap-4 z-10">
+          <div className="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center text-white border border-white/20 flex-shrink-0 shadow-inner">
+            <Truck className="w-6 h-6" />
           </div>
-          <p className="text-xs text-slate-400 mt-1">
-            Monitoreo en vivo de unidades en ruta, choferes y personal asignado.
-          </p>
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">Resumen Operativo en Tiempo Real</h1>
+              <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-bold animate-pulse border border-white/30">
+                <Radio className="w-3 h-3 text-emerald-300" />
+                Realtime
+              </span>
+            </div>
+            <p className="text-xs text-blue-100 mt-1 font-medium">
+              Monitoreo en vivo de unidades en ruta, choferes y personal asignado.
+            </p>
+          </div>
         </div>
 
         {/* Acciones Rápidas */}
-        <div className="grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-2 w-full sm:w-auto">
+        <div className="grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-2.5 w-full lg:w-auto z-10">
           <button
             onClick={() => navigate('/asignaciones')}
-            className="px-4 py-2.5 sm:py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs shadow-lg shadow-sky-600/30 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
+            className="px-4 py-2.5 sm:py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs shadow-lg shadow-sky-600/30 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0 border border-sky-400/40"
           >
             <PlusCircle className="w-4 h-4" />
             Nueva Salida a Ruta
           </button>
           <button
             onClick={() => navigate('/transacciones')}
-            className="px-4 py-2.5 sm:py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
+            className="px-4 py-2.5 sm:py-2 rounded-xl bg-white hover:bg-slate-50 light:text-[#0070f3] dark:bg-slate-900/90 dark:border-slate-700 dark:text-emerald-400 font-bold text-xs shadow-md flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
           >
-            <DollarSign className="w-4 h-4 text-emerald-400" />
+            <DollarSign className="w-4 h-4 text-emerald-500" />
             Gasto Operativo
           </button>
           <button
             onClick={() => navigate('/gastos-personales')}
-            className="px-4 py-2.5 sm:py-2 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 font-semibold text-xs border border-purple-500/30 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
+            className="px-4 py-2.5 sm:py-2 rounded-xl bg-white hover:bg-slate-50 light:text-[#4338ca] dark:bg-slate-900/90 dark:border-slate-700 dark:text-purple-300 font-bold text-xs shadow-md flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
           >
-            <Wallet className="w-4 h-4 text-purple-400" />
+            <Wallet className="w-4 h-4 text-indigo-500" />
             Gastos Personales
           </button>
         </div>

@@ -38,6 +38,75 @@
   @apply bg-slate-900/50 backdrop-blur-sm border border-slate-800/80 hover:border-slate-700 transition-all duration-200 rounded-xl;
 }
 
+/* Modo Claro (Light Mode Theme Rules) */
+html.light body {
+  background-color: #f0f4f9 !important;
+  color: #0f172a !important;
+}
+
+html.light .glass-panel {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05), 0 4px 6px -4px rgba(15, 23, 42, 0.02) !important;
+  color: #0f172a !important;
+}
+
+html.light .glass-card {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04) !important;
+  color: #0f172a !important;
+}
+
+html.light .glass-card:hover {
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light input:not([type="checkbox"]),
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+html.light table thead {
+  background-color: #f1f5f9 !important;
+  color: #334155 !important;
+  border-bottom-color: #e2e8f0 !important;
+}
+
+html.light table tbody tr {
+  border-bottom-color: #f1f5f9 !important;
+}
+
+html.light table tbody tr:hover {
+  background-color: #f8fafc !important;
+}
+
+html.light table td {
+  color: #1e293b !important;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;

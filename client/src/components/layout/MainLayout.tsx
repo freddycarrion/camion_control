@@ -3,19 +3,22 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
 import { useSyncStore } from '../../stores/useSyncStore';
+import { useThemeStore } from '../../stores/useThemeStore';
 import { ToastProvider } from '../common/Toast';
 
 export const MainLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { initSyncListeners } = useSyncStore();
+  const { initTheme } = useThemeStore();
 
   useEffect(() => {
+    initTheme();
     initSyncListeners();
-  }, [initSyncListeners]);
+  }, [initSyncListeners, initTheme]);
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+      <div className="min-h-screen bg-slate-950 light:bg-[#f0f4f9] text-slate-100 light:text-slate-900 flex flex-col transition-colors duration-200">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         <div className="flex-1 md:pl-64 print:pl-0 flex flex-col min-w-0">
