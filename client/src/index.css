@@ -31,11 +31,11 @@
 
 /* Custom Glassmorphism UI */
 .glass-panel {
-  @apply bg-slate-900/80 backdrop-blur-md border border-slate-800 shadow-xl rounded-2xl;
+  @apply bg-[#06122b] border border-[#0d2854] shadow-xl rounded-2xl;
 }
 
 .glass-card {
-  @apply bg-slate-900/50 backdrop-blur-sm border border-slate-800/80 hover:border-slate-700 transition-all duration-200 rounded-xl;
+  @apply bg-[#071736] border border-[#0d2854] hover:border-[#133b7a] transition-all duration-200 rounded-xl;
 }
 
 /* Modo Claro (Light Mode Theme Rules) */
