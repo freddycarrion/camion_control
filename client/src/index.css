@@ -31,11 +31,11 @@
 
 /* Custom Glassmorphism UI */
 .glass-panel {
-  @apply bg-white border border-[#e2e8f0] shadow-sm rounded-2xl dark:bg-[#06122b] dark:border-[#0d2854] dark:shadow-xl;
+  @apply bg-white border border-slate-300 shadow-sm rounded-2xl dark:bg-[#06122b] dark:border-[#0d2854] dark:shadow-xl;
 }
 
 .glass-card {
-  @apply bg-white border border-[#e2e8f0] hover:border-[#cbd5e1] shadow-sm transition-all duration-200 rounded-xl dark:bg-[#071736] dark:border-[#0d2854] dark:hover:border-[#133b7a];
+  @apply bg-white border border-slate-300 hover:border-slate-400 shadow-sm transition-all duration-200 rounded-xl dark:bg-[#071736] dark:border-[#0d2854] dark:hover:border-[#133b7a];
 }
 
 /* Modo Claro (Light Mode Theme Rules matching screenshot) */
@@ -60,11 +60,11 @@ aside {
   color: #ffffff !important;
 }
 
-/* Glass Panels & Cards in Light Mode */
+/* Glass Panels & Cards in Light Mode with clear crisp slate-300 borders */
 html:not(.dark) .glass-panel,
 html.light .glass-panel {
   background-color: #ffffff !important;
-  border-color: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
   box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.04), 0 2px 4px -1px rgba(15, 23, 42, 0.02) !important;
   color: #0f172a !important;
 }
@@ -72,12 +72,17 @@ html.light .glass-panel {
 html:not(.dark) .glass-card,
 html.light .glass-card {
   background-color: #ffffff !important;
-  border-color: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04) !important;
   color: #0f172a !important;
 }
 
-/* Form inputs & dropdowns in Light Mode */
+html:not(.dark) .glass-card:hover,
+html.light .glass-card:hover {
+  border-color: #94a3b8 !important;
+}
+
+/* Form inputs, dropdowns & textareas in Light Mode with crisp slate-400 borders */
 html:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
 html.light input:not([type="checkbox"]):not([type="radio"]),
 html:not(.dark) select,
@@ -85,8 +90,17 @@ html.light select,
 html:not(.dark) textarea,
 html.light textarea {
   background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
+  border-color: #94a3b8 !important;
   color: #0f172a !important;
+}
+
+html:not(.dark) input:focus,
+html.light input:focus,
+html:not(.dark) select:focus,
+html.light select:focus,
+html:not(.dark) textarea:focus,
+html.light textarea:focus {
+  border-color: #0070f3 !important;
 }
 
 html:not(.dark) input::placeholder,
@@ -96,17 +110,17 @@ html.light textarea::placeholder {
   color: #94a3b8 !important;
 }
 
-/* Tables in Light Mode */
+/* Tables in Light Mode with clear section borders */
 html:not(.dark) table thead,
 html.light table thead {
   background-color: #edf5fd !important;
   color: #334155 !important;
-  border-bottom-color: #e2e8f0 !important;
+  border-bottom: 2px solid #cbd5e1 !important;
 }
 
 html:not(.dark) table tbody tr,
 html.light table tbody tr {
-  border-bottom-color: #f1f5f9 !important;
+  border-bottom: 1px solid #cbd5e1 !important;
 }
 
 html:not(.dark) table tbody tr:hover,

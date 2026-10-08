@@ -146,7 +146,7 @@ export const CamionesPage: React.FC = () => {
         {filteredCamiones.map((camion) => (
           <div
             key={camion.id}
-            className="glass-card p-4 sm:p-5 space-y-4 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all group"
+            className="glass-card p-4 sm:p-5 space-y-4 border border-slate-300 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-700 transition-all group"
           >
             <div className="flex items-start justify-between gap-2">
               <div>
@@ -159,7 +159,7 @@ export const CamionesPage: React.FC = () => {
               <Badge type="camion" value={camion.estado} />
             </div>
 
-            <div className="p-3 rounded-xl bg-[#f8fafc] dark:bg-slate-950/60 border border-[#e2e8f0] dark:border-slate-800/80 flex items-center justify-between text-xs">
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-300 dark:border-slate-800/80 flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
                 <UserCheck className="w-4 h-4 text-[#0070f3] dark:text-indigo-400 flex-shrink-0" />
                 <span className="text-slate-500 dark:text-slate-400 truncate">Chofer Titular:</span>
@@ -169,17 +169,17 @@ export const CamionesPage: React.FC = () => {
               </span>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/60">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-300 dark:border-slate-800/60">
               <button
                 onClick={() => handleOpenModal(camion)}
-                className="p-2.5 sm:p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
+                className="p-2.5 sm:p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
                 title="Editar"
               >
                 <Edit2 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
               </button>
               <button
                 onClick={() => handleDelete(camion.id, camion.codigo_interno)}
-                className="p-2.5 sm:p-2 rounded-lg bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
+                className="p-2.5 sm:p-2 rounded-lg bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
                 title="Eliminar"
               >
                 <Trash2 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />

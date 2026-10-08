@@ -128,7 +128,7 @@ export const PersonalPage: React.FC = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar empleado por nombre o teléfono..."
-            className="w-full pl-10 pr-4 py-2.5 sm:py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-[#0f172a] dark:text-white placeholder-slate-400 focus:outline-none focus:border-purple-500"
+            className="w-full pl-10 pr-4 py-2.5 sm:py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-xs text-[#0f172a] dark:text-white placeholder-slate-400 focus:outline-none focus:border-purple-500"
           />
         </div>
 
@@ -140,7 +140,7 @@ export const PersonalPage: React.FC = () => {
               className={`px-3.5 py-2 sm:py-1.5 rounded-xl text-xs font-semibold capitalize border transition-all whitespace-nowrap flex-1 sm:flex-initial text-center ${
                 selectedRolFilter === r
                   ? 'bg-purple-600 text-white border-purple-500 shadow-md'
-                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'
+                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {r === 'todos' ? 'Todos' : r === 'chofer' ? 'Choferes' : 'Ayudantes'}
@@ -154,7 +154,7 @@ export const PersonalPage: React.FC = () => {
         {filteredPersonal.map((p) => (
           <div
             key={p.id}
-            className="glass-card p-4 sm:p-5 space-y-4 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all"
+            className="glass-card p-4 sm:p-5 space-y-4 border border-slate-300 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-700 transition-all"
           >
             <div className="flex items-start justify-between gap-2">
               <div>
@@ -167,7 +167,7 @@ export const PersonalPage: React.FC = () => {
               <Badge type="rol" value={p.rol} />
             </div>
 
-            <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-[#f8fafc] dark:bg-slate-950/60 border border-[#e2e8f0] dark:border-slate-800/80 text-xs">
+            <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-300 dark:border-slate-800/80 text-xs">
               <div>
                 <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider block font-semibold">Tarifa Diario</span>
                 <span className="font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center">
@@ -189,17 +189,17 @@ export const PersonalPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/60">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-300 dark:border-slate-800/60">
               <button
                 onClick={() => handleOpenModal(p)}
-                className="p-2.5 sm:p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
+                className="p-2.5 sm:p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
                 title="Editar"
               >
                 <Edit2 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
               </button>
               <button
                 onClick={() => handleDelete(p.id, p.nombre)}
-                className="p-2.5 sm:p-2 rounded-lg bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
+                className="p-2.5 sm:p-2 rounded-lg bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
                 title="Eliminar"
               >
                 <Trash2 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
