@@ -42,15 +42,45 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-6 sm:space-y-8">
-      {/* Header Banner */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-blue-700 via-blue-600 to-sky-500 text-white shadow-xl shadow-blue-500/15 relative overflow-hidden">
+      {/* Header Bar with Action Buttons */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-end gap-2.5">
+        <button
+          onClick={() => navigate('/asignaciones')}
+          className="px-4 py-2.5 rounded-full sm:rounded-xl bg-[#0070f3] hover:bg-[#005bb5] text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 transition-all border border-blue-400/30"
+        >
+          <PlusCircle className="w-4 h-4" />
+          Nueva Salida a Ruta
+        </button>
+        <button
+          onClick={() => navigate('/transacciones')}
+          className="px-4 py-2.5 rounded-full sm:rounded-xl bg-white hover:bg-slate-50 text-[#0070f3] dark:bg-slate-900/90 dark:border-slate-700 dark:text-emerald-400 font-bold text-xs shadow-sm border border-slate-200/80 flex items-center justify-center gap-2 transition-all"
+        >
+          <DollarSign className="w-4 h-4 text-[#0070f3]" />
+          Gasto Operativo
+        </button>
+        <button
+          onClick={() => navigate('/gastos-personales')}
+          className="px-4 py-2.5 rounded-full sm:rounded-xl bg-white hover:bg-slate-50 text-[#1e1b4b] dark:bg-slate-900/90 dark:border-slate-700 dark:text-purple-300 font-bold text-xs shadow-sm border border-slate-200/80 flex items-center justify-center gap-2 transition-all"
+        >
+          <Wallet className="w-4 h-4 text-indigo-600" />
+          Gastos Personales
+        </button>
+      </div>
+
+      {/* Hero Banner */}
+      <div className="relative overflow-hidden rounded-2xl p-5 sm:p-6 bg-gradient-to-r from-[#024ebd] via-[#0070f3] to-[#041a4a] text-white shadow-xl shadow-blue-500/15 flex items-center justify-between gap-4">
+        {/* Background Semi Truck Watermark Overlay */}
+        <div className="absolute right-0 top-0 bottom-0 w-1/2 opacity-20 pointer-events-none bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-sky-400 via-transparent to-transparent flex items-center justify-end pr-6">
+          <Truck className="w-72 h-72 text-white -mr-12" />
+        </div>
+
         <div className="flex items-center gap-4 z-10">
-          <div className="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center text-white border border-white/20 flex-shrink-0 shadow-inner">
+          <div className="w-12 h-12 rounded-2xl bg-[#0070f3] border border-white/20 flex items-center justify-center text-white shadow-inner flex-shrink-0">
             <Truck className="w-6 h-6" />
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">Resumen Operativo en Tiempo Real</h1>
+              <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white">Resumen Operativo en Tiempo Real</h1>
               <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-bold animate-pulse border border-white/30">
                 <Radio className="w-3 h-3 text-emerald-300" />
                 Realtime
@@ -60,31 +90,6 @@ export const DashboardPage: React.FC = () => {
               Monitoreo en vivo de unidades en ruta, choferes y personal asignado.
             </p>
           </div>
-        </div>
-
-        {/* Acciones Rápidas */}
-        <div className="grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-2.5 w-full lg:w-auto z-10">
-          <button
-            onClick={() => navigate('/asignaciones')}
-            className="px-4 py-2.5 sm:py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs shadow-lg shadow-sky-600/30 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0 border border-sky-400/40"
-          >
-            <PlusCircle className="w-4 h-4" />
-            Nueva Salida a Ruta
-          </button>
-          <button
-            onClick={() => navigate('/transacciones')}
-            className="px-4 py-2.5 sm:py-2 rounded-xl bg-white hover:bg-slate-50 light:text-[#0070f3] dark:bg-slate-900/90 dark:border-slate-700 dark:text-emerald-400 font-bold text-xs shadow-md flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
-          >
-            <DollarSign className="w-4 h-4 text-emerald-500" />
-            Gasto Operativo
-          </button>
-          <button
-            onClick={() => navigate('/gastos-personales')}
-            className="px-4 py-2.5 sm:py-2 rounded-xl bg-white hover:bg-slate-50 light:text-[#4338ca] dark:bg-slate-900/90 dark:border-slate-700 dark:text-purple-300 font-bold text-xs shadow-md flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0"
-          >
-            <Wallet className="w-4 h-4 text-indigo-500" />
-            Gastos Personales
-          </button>
         </div>
       </div>
 
@@ -125,26 +130,26 @@ export const DashboardPage: React.FC = () => {
         {/* Camiones en Ruta Activa hoy */}
         <div className="lg:col-span-2 glass-panel p-4 sm:p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-              <Zap className="w-5 h-5 text-sky-400" />
+            <h2 className="text-base sm:text-lg font-extrabold text-[#0f172a] dark:text-white flex items-center gap-2">
+              <Zap className="w-5 h-5 text-[#0070f3]" />
               Camiones Salidos a Ruta Hoy
             </h2>
             <button
               onClick={() => navigate('/asignaciones')}
-              className="text-xs text-sky-400 hover:underline font-semibold"
+              className="text-xs text-[#0070f3] hover:underline font-extrabold"
             >
               Ver todas las salidas →
             </button>
           </div>
 
           {asignaciones.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-slate-800 rounded-2xl bg-slate-900/30">
-              <Clock className="w-10 h-10 text-slate-600 mx-auto mb-2" />
-              <p className="text-sm font-semibold text-slate-400">No hay salidas registradas para hoy</p>
+            <div className="text-center py-12 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-slate-900/30">
+              <Clock className="w-10 h-10 text-slate-400 mx-auto mb-2" />
+              <p className="text-sm font-semibold text-slate-600 dark:text-slate-400">No hay salidas registradas para hoy</p>
               <p className="text-xs text-slate-500 mt-1">Asigna un camión y chofer para comenzar la ruta.</p>
               <button
                 onClick={() => navigate('/asignaciones')}
-                className="mt-4 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs inline-flex items-center gap-2 shadow-lg shadow-sky-600/20"
+                className="mt-4 px-4 py-2 rounded-xl bg-[#0070f3] hover:bg-blue-600 text-white font-semibold text-xs inline-flex items-center gap-2 shadow-lg shadow-blue-500/20"
               >
                 <PlusCircle className="w-4 h-4" />
                 Registrar primera salida
@@ -153,7 +158,7 @@ export const DashboardPage: React.FC = () => {
           ) : (
             <div className="overflow-x-auto touch-scrolling">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-950/60 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
+                <thead className="bg-[#edf5fd] dark:bg-slate-950/60 text-[#334155] dark:text-slate-400 uppercase tracking-wider font-extrabold border-b border-slate-200 dark:border-slate-800">
                   <tr>
                     <th className="py-3 px-4">Camión</th>
                     <th className="py-3 px-4">Chofer Titular / Asignado</th>
@@ -161,16 +166,16 @@ export const DashboardPage: React.FC = () => {
                     <th className="py-3 px-4">Estado</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/80">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
                   {asignaciones.map((asig) => (
-                    <tr key={asig.id} className="hover:bg-slate-800/40 transition-colors">
+                    <tr key={asig.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
                       <td className="py-3.5 px-4">
-                        <div className="font-bold text-white">
+                        <div className="font-extrabold text-[#0f172a] dark:text-white text-xs">
                           {asig.camion?.codigo_interno || 'Camión'}
                         </div>
-                        <div className="text-[11px] text-slate-400">Placa: {asig.camion?.placa}</div>
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400">Placa: {asig.camion?.placa}</div>
                       </td>
-                      <td className="py-3.5 px-4 font-medium text-slate-200">
+                      <td className="py-3.5 px-4 font-semibold text-slate-800 dark:text-slate-200 uppercase">
                         {asig.chofer?.nombre || 'Sin Chofer'}
                       </td>
                       <td className="py-3.5 px-4">
@@ -179,10 +184,10 @@ export const DashboardPage: React.FC = () => {
                             {asig.ayudantes.map((ay) => (
                               <span
                                 key={ay.id}
-                                className={`px-2 py-0.5 rounded-md text-[10px] font-semibold border ${
+                                className={`px-2.5 py-1 rounded-md text-[11px] font-semibold border uppercase tracking-wider ${
                                   ay.es_temporal
-                                    ? 'bg-amber-500/10 text-amber-300 border-amber-500/20'
-                                    : 'bg-indigo-500/10 text-indigo-300 border-indigo-500/20'
+                                    ? 'bg-amber-500/10 text-amber-600 border-amber-500/20'
+                                    : 'bg-[#dbeafe] text-[#1d4ed8] border-[#bfdbfe]'
                                 }`}
                               >
                                 {ay.es_temporal ? `${ay.nombre_temporal} (Libre)` : ay.personal?.nombre}
@@ -190,7 +195,7 @@ export const DashboardPage: React.FC = () => {
                             ))}
                           </div>
                         ) : (
-                          <span className="text-slate-500 italic">Sin ayudantes</span>
+                          <span className="text-slate-400 italic">Sin ayudantes</span>
                         )}
                       </td>
                       <td className="py-3.5 px-4">
@@ -206,8 +211,8 @@ export const DashboardPage: React.FC = () => {
 
         {/* Estado Operacional de la Flota */}
         <div className="glass-panel p-4 sm:p-6 space-y-4">
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <UserCheck className="w-5 h-5 text-indigo-400" />
+          <h2 className="text-base sm:text-lg font-extrabold text-[#0f172a] dark:text-white flex items-center gap-2">
+            <Users className="w-5 h-5 text-[#0070f3]" />
             Estado de la Flota
           </h2>
 
@@ -215,13 +220,18 @@ export const DashboardPage: React.FC = () => {
             {camiones.slice(0, 5).map((camion) => (
               <div
                 key={camion.id}
-                className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80 flex items-center justify-between hover:border-slate-700 transition-colors"
+                className="p-3.5 rounded-xl bg-[#f8fafc] dark:bg-slate-900/60 border border-[#e2e8f0] dark:border-slate-800/80 flex items-center justify-between hover:border-slate-300 dark:hover:border-slate-700 transition-colors shadow-xs"
               >
-                <div>
-                  <h4 className="text-xs font-bold text-white">{camion.codigo_interno} ({camion.placa})</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5">
-                    Chofer: {camion.chofer_titular?.nombre || 'No asignado'}
-                  </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-[#06132b] text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <Truck className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-extrabold text-[#0f172a] dark:text-white">{camion.codigo_interno} ({camion.placa})</h4>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                      Chofer: {camion.chofer_titular?.nombre || 'No asignado'}
+                    </p>
+                  </div>
                 </div>
                 <Badge type="camion" value={camion.estado} />
               </div>

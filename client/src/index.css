@@ -38,16 +38,22 @@
   @apply bg-[#071736] border border-[#0d2854] hover:border-[#133b7a] transition-all duration-200 rounded-xl;
 }
 
-/* Modo Claro (Light Mode Theme Rules) */
+/* Modo Claro (Light Mode Theme Rules matching screenshot) */
 html.light body {
   background-color: #f0f4f9 !important;
   color: #0f172a !important;
 }
 
+html.light aside {
+  background-color: #06132b !important;
+  border-color: #0d2854 !important;
+  color: #ffffff !important;
+}
+
 html.light .glass-panel {
-  background-color: rgba(255, 255, 255, 0.92) !important;
+  background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
-  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05), 0 4px 6px -4px rgba(15, 23, 42, 0.02) !important;
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.04), 0 2px 4px -1px rgba(15, 23, 42, 0.02) !important;
   color: #0f172a !important;
 }
 
@@ -77,7 +83,7 @@ html.light textarea::placeholder {
 }
 
 html.light table thead {
-  background-color: #f1f5f9 !important;
+  background-color: #edf5fd !important;
   color: #334155 !important;
   border-bottom-color: #e2e8f0 !important;
 }
