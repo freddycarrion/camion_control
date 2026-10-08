@@ -186,10 +186,10 @@ export const TransaccionesPage: React.FC = () => {
       </div>
 
       {/* Tabla de Transacciones */}
-      <div className="glass-panel overflow-hidden">
+      <div className="glass-panel overflow-hidden border border-slate-300 dark:border-slate-800">
         <div className="overflow-x-auto touch-scrolling">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-950/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
+            <thead className="bg-[#edf5fd] dark:bg-slate-950/80 text-[#0f172a] dark:text-slate-300 uppercase tracking-wider font-extrabold border-b-2 border-slate-300 dark:border-slate-800">
               <tr>
                 <th className="py-3.5 px-4">Fecha</th>
                 <th className="py-3.5 px-4">Camión / Destino</th>
@@ -199,31 +199,31 @@ export const TransaccionesPage: React.FC = () => {
                 <th className="py-3.5 px-4 text-right">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/80">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-800/80">
               {transacciones.map((t) => (
-                <tr key={t.id} className="hover:bg-slate-800/40 transition-colors">
-                  <td className="py-3.5 px-4 font-mono text-slate-300">{t.fecha}</td>
+                <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                  <td className="py-3.5 px-4 font-mono font-bold text-[#0f172a] dark:text-slate-300">{t.fecha}</td>
                   <td className="py-3.5 px-4">
                     {t.camion ? (
-                      <span className="font-bold text-white">
+                      <span className="font-extrabold text-[#0f172a] dark:text-white">
                         {t.camion.codigo_interno} ({t.camion.placa})
                       </span>
                     ) : (
-                      <span className="text-slate-400 italic">Flota General</span>
+                      <span className="text-slate-600 dark:text-slate-400 font-semibold italic">Flota General</span>
                     )}
                   </td>
                   <td className="py-3.5 px-4">
-                    <div className="font-semibold text-slate-200">{t.concepto}</div>
-                    {t.observaciones && <div className="text-[11px] text-slate-400">{t.observaciones}</div>}
+                    <div className="font-black text-[#0f172a] dark:text-white text-xs uppercase tracking-wide">{t.concepto}</div>
+                    {t.observaciones && <div className="text-[11px] text-slate-600 dark:text-slate-400 font-semibold mt-0.5">{t.observaciones}</div>}
                   </td>
                   <td className="py-3.5 px-4">{getCategoriaBadge(t.categoria)}</td>
-                  <td className="py-3.5 px-4 font-extrabold text-emerald-400 text-sm">
+                  <td className="py-3.5 px-4 font-black text-[#0f172a] dark:text-emerald-400 text-sm">
                     ${Number(t.monto).toFixed(2)}
                   </td>
                   <td className="py-3.5 px-4 text-right">
                     <button
                       onClick={() => handleDelete(t.id, t.concepto)}
-                      className="p-2 sm:p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors min-w-[36px] min-h-[36px] inline-flex items-center justify-center"
+                      className="p-2 sm:p-1.5 rounded-lg bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20 transition-colors min-w-[36px] min-h-[36px] inline-flex items-center justify-center"
                       title="Eliminar gasto"
                     >
                       <Trash2 className="w-3.5 h-3.5" />

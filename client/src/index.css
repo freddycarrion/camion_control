@@ -105,12 +105,35 @@ html.light main label {
   color: #000000 !important;
 }
 
+/* Force all text-slate-* classes inside main to pure black #000000 in Light Mode */
+html:not(.dark) main .text-slate-100,
+html.light main .text-slate-100,
+html:not(.dark) main .text-slate-200,
+html.light main .text-slate-200,
+html:not(.dark) main .text-slate-300,
+html.light main .text-slate-300,
 html:not(.dark) main .text-slate-400,
 html.light main .text-slate-400,
 html:not(.dark) main .text-slate-500,
 html.light main .text-slate-500,
 html:not(.dark) main .text-slate-600,
-html.light main .text-slate-600 {
+html.light main .text-slate-600,
+html:not(.dark) main .text-slate-700,
+html.light main .text-slate-700,
+html:not(.dark) main .text-slate-800,
+html.light main .text-slate-800,
+html:not(.dark) main .text-slate-900,
+html.light main .text-slate-900 {
+  color: #000000 !important;
+}
+
+/* Ensure dark elements (buttons, sub-boxes) convert to white background with black text in Light Mode */
+html:not(.dark) main .bg-slate-900:not(aside *),
+html.light main .bg-slate-900:not(aside *),
+html:not(.dark) main .bg-slate-950:not(aside *),
+html.light main .bg-slate-950:not(aside *) {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
   color: #000000 !important;
 }
 
@@ -168,7 +191,11 @@ html.light table tbody tr:hover {
 }
 
 html:not(.dark) table td,
-html.light table td {
+html.light table td,
+html:not(.dark) table td div,
+html.light table td div,
+html:not(.dark) table td span:not(.badge-span):not(.btn-span),
+html.light table td span:not(.badge-span):not(.btn-span) {
   color: #000000 !important;
   font-weight: 600 !important;
 }
