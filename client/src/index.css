@@ -66,7 +66,7 @@ html.light .glass-panel {
   background-color: #ffffff !important;
   border-color: #cbd5e1 !important;
   box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.04), 0 2px 4px -1px rgba(15, 23, 42, 0.02) !important;
-  color: #0f172a !important;
+  color: #000000 !important;
 }
 
 html:not(.dark) .glass-card,
@@ -74,7 +74,7 @@ html.light .glass-card {
   background-color: #ffffff !important;
   border-color: #cbd5e1 !important;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04) !important;
-  color: #0f172a !important;
+  color: #000000 !important;
 }
 
 html:not(.dark) .glass-card:hover,
@@ -82,7 +82,39 @@ html.light .glass-card:hover {
   border-color: #94a3b8 !important;
 }
 
-/* Form inputs, dropdowns & textareas in Light Mode with crisp slate-400 borders */
+/* Light Mode global text color rules: PURE BLACK #000000 across all content sections */
+html:not(.dark) main h1:not(.banner-title),
+html.light main h1:not(.banner-title),
+html:not(.dark) main h2:not(.banner-title),
+html.light main h2:not(.banner-title),
+html:not(.dark) main h3:not(.banner-title),
+html.light main h3:not(.banner-title),
+html:not(.dark) main h4,
+html.light main h4,
+html:not(.dark) main h5,
+html.light main h5,
+html:not(.dark) main h6,
+html.light main h6 {
+  color: #000000 !important;
+}
+
+html:not(.dark) main p:not(.banner-text),
+html.light main p:not(.banner-text),
+html:not(.dark) main label,
+html.light main label {
+  color: #000000 !important;
+}
+
+html:not(.dark) main .text-slate-400,
+html.light main .text-slate-400,
+html:not(.dark) main .text-slate-500,
+html.light main .text-slate-500,
+html:not(.dark) main .text-slate-600,
+html.light main .text-slate-600 {
+  color: #000000 !important;
+}
+
+/* Form inputs, dropdowns & textareas in Light Mode with crisp dark borders and black text */
 html:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
 html.light input:not([type="checkbox"]):not([type="radio"]),
 html:not(.dark) select,
@@ -91,7 +123,8 @@ html:not(.dark) textarea,
 html.light textarea {
   background-color: #ffffff !important;
   border-color: #94a3b8 !important;
-  color: #0f172a !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
 }
 
 html:not(.dark) input:focus,
@@ -107,15 +140,21 @@ html:not(.dark) input::placeholder,
 html.light input::placeholder,
 html:not(.dark) textarea::placeholder,
 html.light textarea::placeholder {
-  color: #94a3b8 !important;
+  color: #64748b !important;
 }
 
-/* Tables in Light Mode with clear section borders */
+/* Tables in Light Mode with clear section borders and black text */
 html:not(.dark) table thead,
 html.light table thead {
   background-color: #edf5fd !important;
-  color: #334155 !important;
+  color: #000000 !important;
   border-bottom: 2px solid #cbd5e1 !important;
+}
+
+html:not(.dark) table thead th,
+html.light table thead th {
+  color: #000000 !important;
+  font-weight: 800 !important;
 }
 
 html:not(.dark) table tbody tr,
@@ -130,7 +169,8 @@ html.light table tbody tr:hover {
 
 html:not(.dark) table td,
 html.light table td {
-  color: #1e293b !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
 }
 
 @keyframes spin-slow {
