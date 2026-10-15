@@ -44,8 +44,10 @@ export const AsignacionesPage: React.FC = () => {
   const { showToast } = useToast();
 
   // Filtros y ordenamiento
-  const [modoFecha, setModoFecha] = useState<'todas' | 'especifica'>('todas');
+  const [modoFecha, setModoFecha] = useState<'todas' | 'especifica' | 'rango'>('todas');
   const [fechaFiltro, setFechaFiltro] = useState(new Date().toISOString().split('T')[0]);
+  const [fechaDesde, setFechaDesde] = useState(new Date().toLocaleDateString('en-CA'));
+  const [fechaHasta, setFechaHasta] = useState(new Date().toLocaleDateString('en-CA'));
   const [searchTerm, setSearchTerm] = useState('');
   const [sortAscending, setSortAscending] = useState(false); // Default: Descendente (más reciente primero)
 
@@ -62,11 +64,11 @@ export const AsignacionesPage: React.FC = () => {
   const [ayudantesList, setAyudantesList] = useState<AyudanteFormItem[]>([]);
 
   useEffect(() => {
-    fetchAsignaciones(modoFecha === 'especifica' ? fechaFiltro : 'all');
+    fetchAsignaciones('all');
     fetchCamiones();
     fetchPersonal();
     initRealtimeSubscription();
-  }, [fechaFiltro, modoFecha]);
+  }, []);
 
   const ayudantesPlantilla = personal.filter(p => p.rol === 'ayudante' && p.activo);
   const choferesPlantilla = personal.filter(p => p.rol === 'chofer' && p.activo);
@@ -146,6 +148,16 @@ export const AsignacionesPage: React.FC = () => {
   const planillasFiltradas = useMemo(() => {
     let result = [...asignaciones];
 
+    if (modoFecha === 'especifica') {
+      result = result.filter(item => item.fecha === fechaFiltro);
+    } else if (modoFecha === 'rango') {
+      result = result.filter(item =>
+        (!fechaDesde || item.fecha >= fechaDesde) &&
+        (!fechaHasta || item.fecha <= fechaHasta) &&
+        item.estado !== 'cancelado'
+      );
+    }
+
     // Buscador global (N° Planilla, Fecha, Camión, Chofer, Ayudantes, Observaciones)
     if (searchTerm.trim()) {
       const q = searchTerm.toLowerCase().trim();
@@ -187,7 +199,7 @@ export const AsignacionesPage: React.FC = () => {
     });
 
     return result;
-  }, [asignaciones, searchTerm, sortAscending]);
+  }, [asignaciones, searchTerm, sortAscending, modoFecha, fechaFiltro, fechaDesde, fechaHasta]);
 
   return (
     <div className="space-y-6">
@@ -257,6 +269,14 @@ export const AsignacionesPage: React.FC = () => {
             >
               Fecha Específica
             </button>
+            <button
+              onClick={() => setModoFecha('rango')}
+              className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs font-semibold transition-all text-center ${
+                modoFecha === 'rango' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              Rango de Fechas
+            </button>
           </div>
 
           {modoFecha === 'especifica' && (
@@ -268,6 +288,26 @@ export const AsignacionesPage: React.FC = () => {
                 onChange={(e) => setFechaFiltro(e.target.value)}
                 className="bg-transparent text-xs text-white focus:outline-none w-full"
               />
+            </div>
+          )}
+
+          {modoFecha === 'rango' && (
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+              <label className="flex items-center gap-2 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800 text-xs text-slate-300">
+                Desde
+                <input type="date" value={fechaDesde} max={fechaHasta || undefined}
+                  onChange={e => setFechaDesde(e.target.value)}
+                  className="bg-transparent text-xs text-white focus:outline-none" />
+              </label>
+              <label className="flex items-center gap-2 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800 text-xs text-slate-300">
+                Hasta
+                <input type="date" value={fechaHasta} min={fechaDesde || undefined}
+                  onChange={e => setFechaHasta(e.target.value)}
+                  className="bg-transparent text-xs text-white focus:outline-none" />
+              </label>
+              {fechaDesde && fechaHasta && fechaDesde > fechaHasta && (
+                <span role="alert" className="text-xs text-amber-400">La fecha Desde debe ser anterior o igual a Hasta.</span>
+              )}
             </div>
           )}
 
@@ -289,6 +329,7 @@ export const AsignacionesPage: React.FC = () => {
       <div className="flex items-center justify-between px-1 text-xs text-slate-400 font-semibold">
         <span>
           Mostrando {planillasFiltradas.length} {planillasFiltradas.length === 1 ? 'planilla' : 'planillas'}
+          {modoFecha === 'rango' && ` · ${new Set(planillasFiltradas.map(item => item.camion_id)).size} camiones que salieron a trabajar (sin canceladas)`}
         </span>
         {searchTerm && (
           <span className="text-sky-400 truncate max-w-[150px] sm:max-w-none">

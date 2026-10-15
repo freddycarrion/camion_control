@@ -20,7 +20,8 @@ export const getAsignaciones = async (req: AuthenticatedRequest, res: Response) 
         )
       `)
       .order('fecha', { ascending: false })
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .order('id', { ascending: false });
 
     if (fecha) {
       query = query.eq('fecha', fecha as string);
@@ -29,8 +30,15 @@ export const getAsignaciones = async (req: AuthenticatedRequest, res: Response) 
       query = query.eq('camion_id', camion_id as string);
     }
 
-    const { data, error } = await query;
-    if (error) throw error;
+    // Leer todo el historial, incluso cuando supera el límite por consulta de Supabase.
+    const data: any[] = [];
+    const pageSize = 500;
+    for (let offset = 0; ; offset += pageSize) {
+      const { data: page, error } = await query.range(offset, offset + pageSize - 1);
+      if (error) throw error;
+      data.push(...(page || []));
+      if (!page || page.length < pageSize) break;
+    }
 
     return res.json({ success: true, data });
   } catch (error: any) {
