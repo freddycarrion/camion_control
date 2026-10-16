@@ -10,6 +10,7 @@ import gastosPersonalesRoutes from './routes/gastosPersonalesRoutes';
 import pagosRoutes from './routes/pagosRoutes';
 import reportesRoutes from './routes/reportesRoutes';
 import syncRoutes from './routes/syncRoutes';
+import segurosRoutes from './routes/segurosRoutes';
 
 dotenv.config();
 
@@ -55,6 +56,8 @@ app.use('/reportes', reportesRoutes);
 
 app.use('/api/sync', syncRoutes);
 app.use('/sync', syncRoutes);
+app.use('/api/seguros', segurosRoutes);
+app.use('/seguros', segurosRoutes);
 
 // Global Error Handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

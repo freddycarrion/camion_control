@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
+  ShieldCheck,
   Truck,
   Users,
   Navigation,
@@ -27,6 +28,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { label: 'Dashboard Resumen', path: '/', icon: LayoutDashboard },
     { label: 'Flota de Camiones', path: '/camiones', icon: Truck },
     { label: 'Gestión de Personal', path: '/personal', icon: Users },
+    { label: 'Seguros', path: '/seguros', icon: ShieldCheck },
     { label: 'Planillas de Camiones', path: '/asignaciones', icon: Navigation },
     { label: 'Gastos Operativos', path: '/transacciones', icon: DollarSign },
     { label: 'Gastos Personales', path: '/gastos-personales', icon: Wallet },

@@ -114,6 +114,14 @@ camion-control/
 
 ## 📋 Módulos y Funcionalidades Principales
 
+### Seguros de camiones y personal
+
+Ejecuta también `database/migration_04_seguros.sql` en Supabase → SQL Editor para habilitar el módulo **Seguros**. Cada usuario administra sus propios seguros.
+
+Registra el camión o la persona, la aseguradora, la póliza, el monto en Bs y la próxima fecha de pago o vencimiento. Al abrir la aplicación aparece un aviso desde 5 días antes, incluido el día de vencimiento, y permanece si ya venció. Se comprueba de nuevo cada minuto y al volver a la ventana o recuperar conexión; requiere acceso al servidor y usa la fecha de Bolivia. Los errores de consulta se muestran y no se presentan como ausencia de vencimientos.
+
+Después de pagar o renovar, usa **Editar / renovar** para ingresar la siguiente fecha (también para cuotas mensuales). El sistema no registra pagos ni renueva fechas automáticamente. Los avisos se muestran dentro de la aplicación; no se envían correos ni notificaciones con la aplicación cerrada.
+
 1. **🚛 Gestión de Camiones (`CamionesPage`)**: Alta, edición y baja de unidades (Placa, Código interno, Modelo, Año), asignación de chofer titular fijo y estado operacional (`disponible`, `en_ruta`, `mantenimiento`, `fuera_servicio`).
 2. **👥 Gestión de Personal (`PersonalPage`)**: Registro de empleados clasificados en roles (Choferes y Ayudantes), tarifa de pago diario y estado activo/inactivo.
 3. **🗺️ Salidas del Día (`AsignacionesPage` & `HomePage`)**: Asignación diaria de camion, chofer y ayudantes (registrados en plantilla o libres temporales por nombre). Vista en tiempo real vía **Supabase Realtime**.

@@ -5,6 +5,7 @@ import { Navbar } from './Navbar';
 import { useSyncStore } from '../../stores/useSyncStore';
 import { useThemeStore } from '../../stores/useThemeStore';
 import { ToastProvider } from '../common/Toast';
+import { SegurosAlert } from '../common/SegurosAlert';
 
 export const MainLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -24,6 +25,7 @@ export const MainLayout: React.FC = () => {
         <div className="flex-1 md:pl-64 print:pl-0 flex flex-col min-w-0">
           <Navbar onToggleSidebar={() => setSidebarOpen(prev => !prev)} />
           <main className="flex-1 p-3.5 sm:p-6 md:p-8 print:p-0 overflow-y-auto touch-scrolling pb-safe">
+            <SegurosAlert />
             <Outlet />
           </main>
         </div>

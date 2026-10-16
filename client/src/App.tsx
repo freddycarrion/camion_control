@@ -11,6 +11,7 @@ import { TransaccionesPage } from './pages/TransaccionesPage';
 import { GastosPersonalesPage } from './pages/GastosPersonalesPage';
 import { PagosPage } from './pages/PagosPage';
 import { ReportesPage } from './pages/ReportesPage';
+import { SegurosPage } from './pages/SegurosPage';
 
 // Componente para Proteger Rutas Privadas
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -56,6 +57,7 @@ export const App: React.FC = () => {
           <Route index element={<DashboardPage />} />
           <Route path="camiones" element={<CamionesPage />} />
           <Route path="personal" element={<PersonalPage />} />
+          <Route path="seguros" element={<SegurosPage />} />
           <Route path="asignaciones" element={<AsignacionesPage />} />
           <Route path="transacciones" element={<TransaccionesPage />} />
           <Route path="gastos-personales" element={<GastosPersonalesPage />} />
