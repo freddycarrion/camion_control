@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { usePagosStore } from '../stores/usePagosStore';
 import { usePersonalStore } from '../stores/usePersonalStore';
-import { CalculoPlanillaItem } from '../types';
+import { AdelantoSueldo, CalculoPlanillaItem } from '../types';
 import { Badge } from '../components/common/Badge';
 import { Modal } from '../components/common/Modal';
 import { useToast } from '../components/common/Toast';
@@ -13,6 +13,7 @@ import {
   DollarSign,
   Calendar,
   Trash2,
+  Pencil,
   Wallet,
   AlertTriangle,
   Users,
@@ -49,6 +50,7 @@ export const PagosPage: React.FC = () => {
     error,
     fetchAdelantos,
     addAdelanto,
+    updateAdelanto,
     deleteAdelanto,
     calcularPlanilla,
     fetchPlanillas,
@@ -71,6 +73,8 @@ export const PagosPage: React.FC = () => {
 
   // Modal de adelanto
   const [isAdelantoModalOpen, setIsAdelantoModalOpen] = useState(false);
+  const [editingAdelantoId, setEditingAdelantoId] = useState<string | null>(null);
+  const [guardandoAdelanto, setGuardandoAdelanto] = useState(false);
   const [personalId, setPersonalId] = useState('');
   const [montoAdelanto, setMontoAdelanto] = useState<number | ''>('');
   const [fechaAdelanto, setFechaAdelanto] = useState(toLocalISO(new Date()));
@@ -146,6 +150,15 @@ export const PagosPage: React.FC = () => {
     }
   };
 
+  const abrirAdelanto = (ad?: AdelantoSueldo) => {
+    setEditingAdelantoId(ad?.id || null);
+    setPersonalId(ad?.personal_id || '');
+    setMontoAdelanto(ad ? Number(ad.monto) : '');
+    setFechaAdelanto(ad?.fecha || toLocalISO(new Date()));
+    setMotivoAdelanto(ad?.motivo || '');
+    setIsAdelantoModalOpen(true);
+  };
+
   const handleCreateAdelanto = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!personalId || !montoAdelanto || Number(montoAdelanto) <= 0) {
@@ -153,23 +166,28 @@ export const PagosPage: React.FC = () => {
       return;
     }
 
+    setGuardandoAdelanto(true);
     try {
-      await addAdelanto({
+      if (editingAdelantoId) {
+        await updateAdelanto(editingAdelantoId, {
+          fecha: fechaAdelanto, monto: Number(montoAdelanto), motivo: motivoAdelanto.trim() || null
+        });
+      } else await addAdelanto({
         personal_id: personalId,
         fecha: fechaAdelanto,
         monto: Number(montoAdelanto),
         motivo: motivoAdelanto.trim() || null
       });
 
-      showToast('success', 'Adelanto Registrado', 'Se descontará automáticamente en el próximo pago del empleado.');
+      showToast('success', editingAdelantoId ? 'Adelanto actualizado' : 'Adelanto Registrado', 'Se descontará automáticamente en el próximo pago del empleado.');
       setIsAdelantoModalOpen(false);
       setPersonalId('');
       setMontoAdelanto('');
       setMotivoAdelanto('');
-      calcularPlanilla(fechaInicio, fechaFin);
+      await calcularPlanilla(fechaInicio, fechaFin);
     } catch (err: any) {
-      showToast('error', 'Error al registrar adelanto', err.message);
-    }
+      showToast('error', 'No se pudo guardar el adelanto', err.message);
+    } finally { setGuardandoAdelanto(false); }
   };
 
   const handleDeleteAdelanto = async (id: string) => {
@@ -201,7 +219,7 @@ export const PagosPage: React.FC = () => {
         </div>
 
         <button
-          onClick={() => setIsAdelantoModalOpen(true)}
+          onClick={() => abrirAdelanto()}
           className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 transition-all min-h-[40px] sm:min-h-0 w-full sm:w-auto"
         >
           <Plus className="w-4 h-4" />
@@ -467,6 +485,14 @@ export const PagosPage: React.FC = () => {
                     </td>
                     <td className="py-3.5 px-4 text-right">
                       {!ad.planilla_id && (
+                        <span className="inline-flex items-center gap-2">
+                        <button
+                          onClick={() => abrirAdelanto(ad)}
+                          className="px-2 py-1.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 inline-flex items-center gap-1"
+                          title="Editar adelanto"
+                        >
+                          <Pencil className="w-3.5 h-3.5" /> Editar
+                        </button>
                         <button
                           onClick={() => handleDeleteAdelanto(ad.id)}
                           className="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400"
@@ -474,6 +500,7 @@ export const PagosPage: React.FC = () => {
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
+                        </span>
                       )}
                     </td>
                   </tr>
@@ -565,20 +592,21 @@ export const PagosPage: React.FC = () => {
       {/* Modal: Registrar adelanto */}
       <Modal
         isOpen={isAdelantoModalOpen}
-        onClose={() => setIsAdelantoModalOpen(false)}
-        title="Registrar Adelanto de Sueldo"
+        onClose={() => !guardandoAdelanto && setIsAdelantoModalOpen(false)}
+        title={editingAdelantoId ? 'Editar Adelanto de Sueldo' : 'Registrar Adelanto de Sueldo'}
       >
         <form onSubmit={handleCreateAdelanto} className="space-y-4">
           <div>
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Empleado *</label>
             <select
               value={personalId}
+              disabled={!!editingAdelantoId || guardandoAdelanto}
               onChange={(e) => setPersonalId(e.target.value)}
               required
               className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-indigo-500"
             >
               <option value="">-- Seleccionar Empleado --</option>
-              {personal.filter(p => p.activo).map((p) => (
+              {personal.filter(p => p.activo || p.id === personalId).map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.nombre} ({p.rol.toUpperCase()}) - Pago diario: ${p.pago_diario}
                 </option>
@@ -617,6 +645,7 @@ export const PagosPage: React.FC = () => {
             <input
               type="text"
               value={motivoAdelanto}
+              maxLength={2000}
               onChange={(e) => setMotivoAdelanto(e.target.value)}
               placeholder="Emergencia médica, avance de quincena, etc."
               className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-indigo-500"
@@ -631,15 +660,17 @@ export const PagosPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsAdelantoModalOpen(false)}
+              disabled={guardandoAdelanto}
               className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
             >
               Cancelar
             </button>
             <button
               type="submit"
+              disabled={guardandoAdelanto}
               className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/30"
             >
-              Otorgar Adelanto
+              {guardandoAdelanto ? 'Guardando…' : editingAdelantoId ? 'Guardar cambios' : 'Otorgar Adelanto'}
             </button>
           </div>
         </form>

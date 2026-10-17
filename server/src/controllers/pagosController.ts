@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/authMiddleware';
+import { z } from 'zod';
 
 // --- ADELANTOS DE SUELDO ---
 
@@ -59,6 +60,29 @@ export const createAdelanto = async (req: AuthenticatedRequest, res: Response) =
 
     if (error) throw error;
     return res.status(201).json({ success: true, data });
+  } catch (error: any) {
+    return res.status(400).json({ success: false, error: error.message });
+  }
+};
+
+export const updateAdelanto = async (req: AuthenticatedRequest, res: Response) => {
+  const parsed = z.object({
+    monto: z.number().finite().positive().max(99999999.99),
+    fecha: z.string().date(),
+    motivo: z.string().trim().max(2000).nullable()
+  }).strict().safeParse(req.body);
+  if (!z.string().uuid().safeParse(req.params.id).success || !parsed.success) {
+    return res.status(400).json({ success: false, error: 'Ingresa un monto positivo, una fecha válida y un motivo de hasta 2000 caracteres.' });
+  }
+  try {
+    // La condición se verifica en el UPDATE para no modificar un adelanto ya descontado.
+    const { data, error } = await req.db!.from('adelantos_sueldo')
+      .update({ ...parsed.data, updated_at: new Date().toISOString(), sync_status: 'synced' })
+      .eq('id', req.params.id).is('planilla_id', null)
+      .select('*, personal:personal(id, nombre, rol, pago_diario)').maybeSingle();
+    if (error) throw error;
+    if (!data) return res.status(409).json({ success: false, error: 'El adelanto no existe o ya fue descontado. Actualiza la lista antes de continuar.' });
+    return res.json({ success: true, data });
   } catch (error: any) {
     return res.status(400).json({ success: false, error: error.message });
   }

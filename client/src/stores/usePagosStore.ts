@@ -12,6 +12,7 @@ interface PagosState {
   error: string | null;
   fetchAdelantos: (personal_id?: string) => Promise<void>;
   addAdelanto: (data: Omit<AdelantoSueldo, 'id'>) => Promise<void>;
+  updateAdelanto: (id: string, data: Pick<AdelantoSueldo, 'monto' | 'fecha' | 'motivo'>) => Promise<void>;
   deleteAdelanto: (id: string) => Promise<void>;
   calcularPlanilla: (fecha_inicio: string, fecha_fin: string, personal_id?: string) => Promise<void>;
   fetchPlanillas: () => Promise<void>;
@@ -92,6 +93,18 @@ export const usePagosStore = create<PagosState>((set, get) => ({
         console.warn('Adelanto guardado en Dexie:', err);
       }
     }
+  },
+
+  updateAdelanto: async (id, data) => {
+    if (!navigator.onLine) throw new Error('Conéctate a internet para corregir un adelanto.');
+    if (get().adelantos.find(a => a.id === id)?.planilla_id) {
+      throw new Error('No se puede editar un adelanto ya descontado.');
+    }
+    // Confirmar en el servidor antes de cambiar los datos locales.
+    const saved = await api.put<AdelantoSueldo>(`/pagos/adelantos/${id}`, data);
+    set({ adelantos: get().adelantos.map(a => a.id === id ? saved : a) });
+    await db.adelantos.put({ ...saved, sync_status: 'synced' });
+    await useSyncStore.getState().checkPendingCount();
   },
 
   deleteAdelanto: async (id) => {

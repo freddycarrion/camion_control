@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   getAdelantos,
   createAdelanto,
+  updateAdelanto,
   deleteAdelanto,
   calcularPlanillaSemanal,
   pagarEmpleado,
@@ -18,6 +19,7 @@ router.use(requireAuth);
 // Adelantos
 router.get('/adelantos', getAdelantos);
 router.post('/adelantos', createAdelanto);
+router.put('/adelantos/:id', updateAdelanto);
 router.delete('/adelantos/:id', deleteAdelanto);
 
 // Planillas
